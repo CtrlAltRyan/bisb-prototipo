@@ -1,0 +1,1 @@
+Esta pasta deve conter documentos como o cronograma, Kanban, slides, relatórios ou anotações gerais do projeto.

@@ -1,0 +1,1 @@
+Esta pasta deve conter os scripts .sql de criação e popularização do banco de dados, e instruções para restaurar localmente.

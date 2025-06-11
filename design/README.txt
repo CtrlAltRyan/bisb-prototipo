@@ -1,0 +1,1 @@
+Esta pasta deve conter o logotipo, layout visual da plataforma, arquivos do Figma, imagens e identidade visual.

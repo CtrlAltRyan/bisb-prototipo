@@ -1,0 +1,1 @@
+Esta pasta deve conter o código da API do sistema, como arquivos em Flask, FastAPI ou Node.js. Ex: main.py, rotas, autenticação, etc.
