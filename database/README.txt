@@ -8,3 +8,6 @@ bcrypt
 
 ---
 users.json: Json contendo os logins e senhas do sistema que foram inseridos na tabela usuarios.
+
+---
+dump-postgres-202505272213.sql: Código sql para recriar a base de dados.
