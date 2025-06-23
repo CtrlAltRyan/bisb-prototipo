@@ -1,0 +1,437 @@
+/* --- Paleta de Cores --- */
+:root {
+    --cor-fundo-principal: rgb(252, 237, 234);
+    --cor-fundo-cards: #F4EFED;
+    --cor-texto-principal: #705E56;
+    --cor-texto-secundario: #A88A80;
+    --cor-detalhes-bordas: #C6B4AE;
+    --cor-borda-input: #E0E0E0;
+    --cor-placeholder-input: #828282;
+    --cor-fundo-botao: #705E56;
+}
+
+/* --- Estilos Globais e Reset --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* --- Estilo Principal do Corpo da Página --- */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--cor-fundo-principal);
+    color: var(--cor-texto-principal);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+/* --- Container Principal (Para Login) --- */
+.main-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 150px; /* Reduzi o gap para aproximar mais da imagem */
+    padding: 20px;
+}
+
+/* --- Seção de Branding (Esquerda) --- */
+.branding-section {
+    width: 500px;
+    height: 500px;
+}
+
+.logo-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+/* --- Seção de Login (Direita) --- */
+.login-section {
+    padding: 35px;
+    text-align: center;
+    border-radius: 40px;
+    background: #FFF;
+    box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.25);
+    width: 460px;
+    min-height: 415px; /* Altura mínima para garantir consistência */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* --- Formulário de Login --- */
+.login-form h3 {
+    color: var(--cor-texto-principal);
+    font-family: 'Inter', sans-serif;
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 8px; /* Espaço abaixo do título */
+}
+
+.login-form > p { /* Seletor '>' para afetar apenas o parágrafo direto do form */
+    color: var(--cor-texto-principal);
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.5;
+    margin-bottom: 20px; /* Espaço abaixo do subtítulo */
+}
+
+/* --- Grupo de Input --- */
+.input-group {
+    margin-bottom: 15px; /* Espaçamento entre os campos de input */
+}
+
+.input-group input {
+    width: 100%; /* Ocupa 100% da largura do container do formulário */
+    height: 45px;
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: 1px solid var(--cor-borda-input);
+    background: #FFF;
+    font-family: 'Inter', sans-serif;
+    font-size: 18px;
+}
+
+.input-group input::placeholder {
+    color: var(--cor-placeholder-input);
+    font-weight: 500;
+}
+
+.input-group input:focus {
+    outline: none;
+    border-color: var(--cor-texto-principal);
+}
+
+/* --- Botão "Entrar" --- */
+.btn-signin {
+    width: 100%;
+    padding: 14px;
+    background-color: var(--cor-fundo-botao);
+    color: #FFFFFF;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600; 
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+}
+
+.btn-signin:hover {
+    background-color: var(--cor-texto-secundario);
+}
+
+/* Links Adicionais (Criar Conta / Esqueci Senha) --- */
+.form-links {
+    margin-top: 25px;
+    text-align: center;
+}
+
+.form-links p {
+    font-family: 'Inter', sans-serif;
+    color: var(--cor-texto-principal);
+    font-size: 14px;
+    font-weight: 400;
+    margin-bottom: 8px; /* Espaço entre as linhas */
+}
+
+.form-links a {
+    color: var(--cor-texto-principal);
+    font-weight: 600; /* Destaque para o "aqui" */
+    text-decoration: none;
+}
+
+.form-links a:hover {
+    text-decoration: underline;
+}
+
+/* --- Responsividade --- */
+@media (max-width: 920px) {
+    .main-container {
+        flex-direction: column;
+        gap: 30px;
+    }
+    .branding-section {
+        width: 300px; /* Ajusta o tamanho da logo em telas menores */
+        height: 300px;
+        order: 1; /* Coloca a logo primeiro */
+    }
+    .login-section {
+        width: 100%;
+        max-width: 430px;
+        order: 2; /* Formulário vem depois */
+    }
+}
+
+/* --- Estilo do Pop-up (Toast Notification) --- */
+.toast {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    background-color: #D8000C;
+    color: white;
+    padding: 16px 24px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    font-weight: 500;
+    opacity: 0;
+    transform: translate(-50%, -100px);
+    transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+}
+
+.toast.show {
+    opacity: 1;
+    transform: translate(-50%, 0);
+}
+
+/* --- Divisor Vertical Decorativo --- */
+.vertical-divider {
+    width: 2px; 
+    height: 470px; 
+    background-color: var(--cor-detalhes-bordas); 
+    border-radius: 1px; /*pontas arredondadas */
+}
+
+
+/* --- Estrutura principal da página --- */
+.reset-container {
+    display: flex;
+    /* Garante que o container ocupe a tela inteira. */
+    width: 100%;
+    min-height: 100vh;
+}
+
+/* --- Painel esquerdo (onde fica o logo) --- */
+.reset-left-panel {
+    flex: 0 0 35%;
+    background: #FFF3F0;
+    /* Centraliza o conteúdo (o logo) vertical e horizontalmente. */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    width: 400px;
+}
+
+/* --- Estilo do Logo --- */
+.reset-logo-image {
+    width: 400px;
+    height: 400px;
+    background: #FFF3F0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  
+}
+
+/* --- Painel direito (onde fica o formulário) --- */
+.reset-right-panel {
+    /* Faz o painel ocupar o espaço restante  */
+    flex: 1;
+    background: white;
+    /* Organiza os itens em coluna e os centraliza. */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    width: 600px;
+    /* Cria um espaço de 45px entre os elementos filhos diretos (ex: título e formulário). */
+    gap: 45px;
+}
+
+/* --- Container do formulário --- */
+.reset-form-container {
+    /* Ocupa 100% da largura do painel direito. */
+    width: 100%;
+    /* Limita a largura máxima do formulário para melhor legibilidade. */
+    max-width: 600px;
+    margin-bottom: 200px;
+   
+}
+
+/* --- Título "Redefina sua senha" --- */
+.reset-title {
+    color: var(--cor-texto-principal);
+    text-align: center;
+    font-family: 'Montserrat';
+    font-size: 60px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 150%; /* 90px */
+    letter-spacing: -0.6px;
+    margin-bottom: 45px;
+}
+
+/* --- Mensagens de feedback (Flash Messages) --- */
+/* Container para as mensagens (sucesso, erro, etc.) */
+.reset-flash-messages {
+    margin-bottom: 20px;
+}
+
+/* Estilo base para qualquer mensagem de feedback. */
+.reset-flash-message {
+    background: #dff0d8; /* Fundo verde para sucesso (padrão) */
+    border: 1px solid #d6e9c6;
+    color: #3c763d;
+    padding: 12px 15px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    text-align: center;
+    font-size: 14px;
+    font-family: 'Inter', sans-serif;
+}
+
+/* Variação para mensagens de ERRO. */
+.reset-flash-message.error {
+    background: #f2dede; 
+    border-color: #ebccd1;
+    color: #a94442;
+}
+
+/* Variação para mensagens de AVISO. */
+.reset-flash-message.warning {
+    background: #fcf8e3; /* Fundo amarelo */
+    border-color: #faebcc;
+    color: #8a6d3b;
+}
+
+/* Variação para mensagens de INFORMAÇÃO. */
+.reset-flash-message.info {
+    background: #d9edf7; /* Fundo azul */
+    border-color: #bce8f1;
+    color: #31708f;
+}
+
+/* --- Estilos do Formulário --- */
+/* Agrupamento de cada campo de input (label + input). */
+.reset-form-group {
+    margin-bottom: 25px;
+}
+
+/* Estilo do campo de texto (input). */
+.reset-form-input {
+    width: 100%;
+    padding: 18px 20px;
+    border: 2px solid var(--cor-borda-input);
+    border-radius: 8px;
+    font-size: 16px;
+    background: #fafafa;
+    color: var(--cor-texto-principal);
+    /* Efeito de transição suave para mudanças de estilo. */
+    transition: all 0.3s ease;
+    /* Remove a borda padrão que aparece ao clicar no campo. */
+    outline: none;
+    font-family: 'Inter', sans-serif;
+}
+
+/* Estilo do input quando está em FOCO (selecionado pelo usuário). */
+.reset-form-input:focus {
+    border-color: var(--cor-texto-principal);
+    background: white;
+    /* Adiciona uma "aura" (sombra) ao redor do campo focado. */
+    box-shadow: 0 0 0 3px rgba(112, 94, 86, 0.1);
+}
+
+/* Estilo do texto de exemplo (placeholder). */
+.reset-form-input::placeholder {
+    color: var(--cor-placeholder-input);
+    font-weight: 300;
+}
+
+/* Estilo do input quando há um ERRO de validação. */
+.reset-form-input.error {
+    border-color: #e74c3c; /* Borda vermelha */
+    background: #fdf2f2;
+}
+
+/* Estilo do input quando a validação é um SUCESSO. */
+.reset-form-input.success {
+    border-color: #27ae60; /* Borda verde */
+    background: #f2f9f2;
+}
+
+/* --- Botão de Envio --- */
+.reset-submit-btn {
+    width: 100%;
+    padding: 18px;
+    /* Cria um fundo com gradiente. */
+    background: linear-gradient(135deg, var(--cor-fundo-botao) 0%, var(--cor-texto-secundario) 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    /* Transforma o texto para maiúsculas. */
+    text-transform: uppercase;
+    /* Muda o cursor para uma "mãozinha" para indicar que é clicável. */
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 20px;
+    font-family: 'Inter', sans-serif;
+}
+
+/* Efeito ao passar o mouse sobre o botão. */
+.reset-submit-btn:hover {
+    /* Eleva o botão levemente no eixo Y. */
+    transform: translateY(-2px);
+    /* Aumenta a sombra para dar a impressão de que está "flutuando". */
+    box-shadow: 0 8px 25px rgba(112, 94, 86, 0.3);
+}
+
+/* Efeito ao CLICAR no botão. */
+.reset-submit-btn:active {
+    /* Retorna o botão à sua posição original, simulando um clique. */
+    transform: translateY(0);
+}
+
+/* Estilo para quando o botão estiver DESABILITADO. */
+.reset-submit-btn:disabled {
+    opacity: 0.6; /* Deixa o botão semitransparente. */
+    cursor: not-allowed; /* Mostra um cursor de "proibido". */
+    transform: none; /* Remove qualquer transformação (hover). */
+}
+
+/* --- Estado de Carregamento (Loading) para o Botão --- */
+/* Estilo aplicado ao botão quando está carregando (ex: enviando dados). */
+.reset-submit-btn.loading {
+    position: relative;
+    /* Esconde o texto do botão. */
+    color: transparent;
+}
+
+
+
+/* --- Animações de Entrada --- */
+/* Define uma animação que faz o elemento surgir de baixo para cima. */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Aplica a animação ao container do formulário. */
+.reset-form-container {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+/* Aplica a mesma animação ao logo, com um pequeno atraso (delay). */
+.reset-logo {
+    /* 'both' garante que o estado final da animação seja mantido. */
+    animation: fadeInUp 0.6s ease-out 0.2s both;
+}

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - BISB</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        /* Estilo simples para a página home */
+        body { display: flex; justify-content: center; align-items: center; text-align: center; }
+        .welcome-card { background-color: white; padding: 50px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+    </style>
+</head>
+<body>
+    <div class="welcome-card">
+        <h1>Bem-vinda, Francisca!</h1>
+        <p>Login realizado com sucesso.</p>
+        <br>
+        <a href="{{ url_for('login_page') }}">Sair</a>
+    </div>
+</body>
+</html>
