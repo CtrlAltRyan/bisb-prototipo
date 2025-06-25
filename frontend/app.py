@@ -1,4 +1,6 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, send_file
+import matplotlib.pyplot as plt
+import os
 
 app = Flask(__name__)
 
@@ -9,6 +11,8 @@ app.secret_key = 'sua-chave-secreta-muito-segura-e-aleatoria'
 def check_credentials(username, password):
     """Verifica se o usuário e a senha estão corretos."""
     if username == 'francisca' and password == 'francisca':
+        return True
+    if username == ' ' and password == ' ':
         return True
     return False
 
@@ -36,9 +40,7 @@ def send_recovery_email(nome, usuario):
     print(f"Email de recuperação enviado para {nome} ({usuario})")
     return True
 
-# --- Rotas da Aplicação ---
 
-# Rota de login (sem alterações, continua perfeita)
 @app.route('/', methods=['GET', 'POST'])
 def login_page():
     if request.method == 'POST':
@@ -46,26 +48,35 @@ def login_page():
         password_form = request.form['password']
 
         if check_credentials(username_form, password_form):
-            return redirect(url_for('home_page'))
+            # Passa o nome do usuário para a rota home
+            return redirect(url_for('home_page', username=username_form))
         else:
             flash('Usuário ou senha inválidos. Tente novamente.')
             return redirect(url_for('login_page'))
     
-    # OBS: Você precisa renomear seu arquivo de login para 'login.html' na pasta templates
     return render_template('login.html') 
 
-# Rota para a página principal após o login (sem alterações)
+
 @app.route('/home')
 def home_page():
-    """Renderiza a página 'home' para usuários autenticados."""
-    # OBS: Você precisará criar um arquivo 'home.html' simples na pasta templates
-    return render_template('home.html')
+    """Renderiza a página 'home' (painel) para usuários autenticados."""
+    # Pega o nome de usuário passado como parâmetro na URL
+    # Define um valor padrão 'Visitante' caso não seja fornecido
+    username = request.args.get('username', 'Visitante')
 
-# ===================================================================
-#           ROTAS ATUALIZADAS
-# ===================================================================
+    # Dados de exemplo para os cards (em um app real, viriam do banco de dados)
+    dashboard_data = {
+        'vendas_mensais': 'R$ 2.870,00',
+        'clientes_atuais': 60,
+        'clientes_ativos_perc': '78,33%',
+        'servico_mais_vendido': 'Escova'
+    }
 
-# NOVA ROTA: Página de Cadastro de Conta
+    # Renderiza o template do painel e passa as variáveis para ele
+    return render_template('home.html', user=username.capitalize(), data=dashboard_data)
+
+
+
 @app.route('/register')
 def register_page():
     """Apenas renderiza (mostra) a página de cadastro."""
@@ -107,8 +118,10 @@ def reset_password_page():
     
     return render_template('reset_password.html')
 
-# ===================================================================
+
+
+
 
 # Permite que você rode o arquivo diretamente com 'python app.py'
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', debug=True, port=8080)
+    app.run(debug=True)

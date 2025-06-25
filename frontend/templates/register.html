@@ -4,60 +4,60 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Crie sua Conta - BISB Consultoria</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com"> 
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"> 
     
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    
-    <link rel="icon" href="{{ url_for('static', filename='images/logo_browser.png') }}" type="image/x-icon">
-</head>
+    <link rel="icon" href="{{ url_for('static', filename='images/logo_browser.png') }}" type="image/x-icon">     
 <body>
-    <div class="register-container">
-        <div class="register-left-panel">
-            <div class="register-logo-container">
-                <div class="register-logo">
-                    <img src="{{ url_for('static', filename='images/logo_browser.png') }}" alt="Logo BISB Consultoria" class="register-logo-image">
-                    <div class="register-profile-icon"></div>
-                    <div class="register-chart-bars">
-                        <div class="register-bar"></div>
-                        <div class="register-bar"></div>
-                        <div class="register-bar"></div>
-                        <div class="register-bar"></div>
+    <div class="reset-container">
+        <div class="reset-left-panel">
+            <div class="reset-logo-container">
+                <div class="reset-logo">
+                    <img src="{{ url_for('static', filename='images/logo_browser.png') }}" alt="Logo BISB Consultoria" class="reset-logo-image">
+                    <div class="reset-profile-icon"></div>
+                    <div class="reset-chart-bars">
+                        <div class="reset-bar"></div>
+                        <div class="reset-bar"></div>
+                        <div class="reset-bar"></div>
+                        <div class="reset-bar"></div>
                     </div>
                 </div>
             </div>
         </div>
         
-        <div class="register-right-panel">
-            <div class="register-form-container">
-                <h1 class="register-title">Crie sua conta</h1>
+        <div class="reset-right-panel">
+            <div class="reset-form-container">
+                <h1 class="reset-title">Crie sua conta</h1>
                 
                 <!-- Flash messages do Flask -->
                 {% with messages = get_flashed_messages(with_categories=true) %}
                     {% if messages %}
-                        <div class="register-flash-messages">
+                        <div class="reset-flash-messages">
                             {% for category, message in messages %}
-                                <div class="register-flash-message {{ category }}">{{ message }}</div>
+                                <div class="reset-flash-message {{ category }}">{{ message }}</div>
                             {% endfor %}
                         </div>
                     {% endif %}
                 {% endwith %}
                 
-                <form method="POST" action="{{ url_for('register_page') }}" id="registerForm">
-                    <div class="register-form-group">
-                        <input type="text" name="name" class="register-form-input" placeholder="nome" required>
+                <form method="POST" action="{{ url_for('register_page') }}" id="resetForm">
+                    <div class="reset-form-group">
+                        <input type="text" name="name" class="reset-form-input" placeholder="nome" required>
                     </div>
                     
-                    <div class="register-form-group">
-                        <input type="text" name="user" class="register-form-input" placeholder="usuário" required>
+                    <div class="reset-form-group">
+                        <input type="text" name="user" class="reset-form-input" placeholder="usuário" required>
                     </div>
                     
-                    <div class="register-form-group">
-                        <input type="password" name="password" class="register-form-input" placeholder="senha" required>
+                    <div class="reset-form-group">
+                        <input type="password" name="password" class="reset-form-input" placeholder="senha" required>
                     </div>
                     
-                    <button type="submit" class="register-submit-btn">CADASTRAR</button>
+                    <button type="submit" class="reset-submit-btn">CADASTRAR</button>
                 </form>
             </div>
         </div>
@@ -65,8 +65,8 @@
 
     <script>
         // JavaScript para validação
-        document.getElementById('registerForm').addEventListener('submit', function(e) {
-            const inputs = this.querySelectorAll('.register-form-input');
+        document.getElementById('resetForm').addEventListener('submit', function(e) {
+            const inputs = this.querySelectorAll('.reset-form-input');
             let allFilled = true;
             
             inputs.forEach(input => {
@@ -86,7 +86,7 @@
         });
 
         // Limpar validação quando o usuário começar a digitar
-        document.querySelectorAll('.register-form-input').forEach(input => {
+        document.querySelectorAll('.reset-form-input').forEach(input => {
             input.addEventListener('input', function() {
                 this.classList.remove('error', 'success');
             });
