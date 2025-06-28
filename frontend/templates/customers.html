@@ -1,120 +1,32 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clientes - Painel de Controle</title>
-    <!-- Lembre-se de linkar seu arquivo CSS aqui -->
-    <!-- <link rel="stylesheet" href="style.css"> -->
-</head>
-<body>
+<!-- 1. Herda tudo do nosso esqueleto -->
+{% extends 'layout_painel.html' %}
 
-    <div class="dashboard-container">
-        
-        <!-- =============================== -->
-        <!--      BARRA LATERAL ESQUERDA     -->
-        <!-- =============================== -->
-        <aside class="sidebar">
-            <div class="sidebar__logo">
-                <!-- Substitua pelo caminho do seu logo -->
-                <img src="caminho/para/logo.png" alt="Logo BISB Consultoria">
-            </div>
+<!-- 2. Preenche o bloco do título da aba -->
+{% block title %}Clientes{% endblock %}
 
-            <nav class="sidebar__navigation">
-                <ul>
-                    <li class="sidebar__item">
-                        <a href="#" class="sidebar__link sidebar__link--active">
-                            <!-- Substitua pelo caminho do seu ícone -->
-                            <img src="caminho/para/icon-clientes.svg" alt="" class="sidebar__icon">
-                            <span>Clientes</span>
-                        </a>
-                    </li>
-                    <li class="sidebar__item">
-                        <a href="#" class="sidebar__link">
-                            <img src="caminho/para/icon-servicos.svg" alt="" class="sidebar__icon">
-                            <span>Serviços</span>
-                        </a>
-                    </li>
-                    <li class="sidebar__item">
-                        <a href="#" class="sidebar__link">
-                            <img src="caminho/para/icon-vendas.svg" alt="" class="sidebar__icon">
-                            <span>Vendas</span>
-                        </a>
-                    </li>
-                    <li class="sidebar__item">
-                        <a href="#" class="sidebar__link">
-                            <img src="caminho/para/icon-suporte.svg" alt="" class="sidebar__icon">
-                            <span>Suporte</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
+<!-- 3. Preenche o bloco do cabeçalho da página -->
+{% block page_header %}
+<div class="page-header__title-group">
+    <img src="{{ url_for('static', filename='images/customers_icon.png') }}" class="page-header__icon">
+    <h1 class="page-header__title">Clientes</h1>
+</div>
+{% endblock %}
 
-            <div class="sidebar__logout">
-                <a href="#" class="sidebar__link">
-                    <img src="caminho/para/icon-sair.svg" alt="" class="sidebar__icon">
-                    <span>Sair</span>
-                </a>
-            </div>
-        </aside>
-
-     
-        <main class="main-content">
-        
-            <header class="page-header">
-                <div class="page-header__title-group">
-                    <img src="caminho/para/icon-clientes-header.svg" alt="" class="page-header__icon">
-                    <h1 class="page-header__title">Clientes</h1>
-                </div>
-
-                <div class="page-header__actions">
-                    <div class="search-bar">
-                        <input type="search" placeholder="Pesquisar...">
-    
-                    </div>
-                    <div class="user-profile">
-                        <button class="user-profile__button" aria-label="Perfil do Usuário">
-                            <img src="caminho/para/avatar-usuario.svg" alt="Avatar do Usuário">
-                        </button>
-                    </div>
-                </div>
-            </header>
-
-            <section class="table-actions">
-                <button class="action-button action-button--add">
-                    <img src="caminho/para/icon-add.svg" alt="">
-                    <span>Adicionar</span>
-                </button>
-                <button class="action-button action-button--delete">
-                    <img src="caminho/para/icon-delete.svg" alt="">
-                    <span>Excluir</span>
-                </button>
-                <button class="action-button action-button--edit">
-                    <img src="caminho/para/icon-edit.svg" alt="">
-                    <span>Editar</span>
-                </button>
-            </section>
-
-       
-            <section class="table-container">
-                <table class="client-table">
-                    <thead>
-                        <tr>
-                            <th><input type="checkbox" aria-label="Selecionar todos"></th>
-                            <th>Nome do Cliente</th>
-                            <th>Email</th>
-                            <th>Telefone</th>
-                            <th>Status</th>
-                            <th>Última Visita</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        
-                    </tbody>
-                </table>
-            </section>
-        </main>
-    </div>
-
-</body>
-</html>
+<!-- 4. Preenche o bloco com a tabela de clientes -->
+{% block table_content %}
+    <table class="client-table">
+        <thead>
+            <tr>
+                <th><input type="checkbox" aria-label="Selecionar todos"></th>
+                <th>Nome do Cliente</th>
+                <th>Email</th>
+                <th>Telefone</th>
+                <th>Status</th>
+                <th>Última Visita</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Loop para mostrar os dados dos clientes viria aqui -->
+        </tbody>
+    </table>
+{% endblock %}

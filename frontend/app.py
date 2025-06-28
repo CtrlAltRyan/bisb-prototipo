@@ -118,7 +118,20 @@ def reset_password_page():
     
     return render_template('reset_password.html')
 
+@app.route('/customers')
+def customers_page():
+    """Apenas renderiza (mostra) a página de cadastro."""
+    return render_template('customers.html')
 
+@app.route('/sales')
+def sales_page():
+    """Apenas renderiza (mostra) a página de cadastro."""
+    return render_template('sales.html')
+
+@app.route('/services')
+def services_page():
+    """Apenas renderiza (mostra) a página de cadastro."""
+    return render_template('services.html')
 
 
 

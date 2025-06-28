@@ -71,6 +71,14 @@ body {
     font-size: 24px;
     font-weight: 600;
     margin-bottom: 8px; /* Espaço abaixo do título */
+    color: #705E56;
+    text-align: center;
+    font-family: Montserrat;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 150%; /* 36px */
+    letter-spacing: -0.24px;
 }
 
 .login-form > p { /* Seletor '>' para afetar apenas o parágrafo direto do form */
@@ -80,6 +88,13 @@ body {
     font-weight: 400;
     line-height: 1.5;
     margin-bottom: 20px; /* Espaço abaixo do subtítulo */
+    color: #705E56;
+    text-align: center;
+    font-family: Montserrat;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 150%; /* 24px */
 }
 
 /* --- Grupo de Input --- */
@@ -99,8 +114,14 @@ body {
 }
 
 .input-group input::placeholder {
-    color: var(--cor-placeholder-input);
-    font-weight: 500;
+    overflow: hidden;
+    color: #828282;
+    text-overflow: ellipsis;
+    font-family: "Open Sans";
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 150%; /* 30px */
 }
 
 .input-group input:focus {
@@ -115,12 +136,18 @@ body {
     background-color: var(--cor-fundo-botao);
     color: #FFFFFF;
     border: none;
-    border-radius: 8px;
+    border-radius: 30px;
     font-size: 1rem;
     font-weight: 600; 
     cursor: pointer;
     transition: background-color 0.3s ease;
     margin-top: 10px;
+    text-align: center;
+    font-family: 'Montserrat';
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 150%; /* 24px */
 }
 
 .btn-signin:hover {
@@ -534,6 +561,12 @@ body {
     height: 30px;
 }
 
+.sidebarsupport__icon {
+    width: 30px;
+    height: 30px;
+    cursor : wait;
+}
+
 /* --- CONTEÚDO PRINCIPAL (MAIN) --- */
 /* Define a área principal que receberá o conteúdo.
    'margin-left' cria o espaço necessário para a sidebar fixa não sobrepor o conteúdo. */
@@ -550,6 +583,7 @@ body {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 30px;
+    
 }
 
 .main-header__welcome h1 {
@@ -709,5 +743,169 @@ body {
    width: 15px;
    margin-left: -5px;
    margin-right: 10px;
+}
+
+a {
+    text-decoration: none; 
+}
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+
+.page-header__title-group {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.page-header__icon {
+    width: 45px;
+    height: 45px;
+    flex-shrink: 0
+}
+
+.page-header__title {
+    color: #000;
+    font-family: 'Montserrat';
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    line-height: 32px; 
+}
+
+.page-header__actions .search-bar input {
+    border-radius: 8px;
+    background-color: #FFF;
+    border: 1px solid var(--cor-borda-input);
+}
+
+.page-header__actions .user-profile__button img {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+}
+
+/* --- BOTÕES DE AÇÃO (Adicionar, Excluir) --- */
+.table-actions {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 25px;
+    
+}
+
+.action-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 20px;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #FFF;
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+    color: #000;
+    font-family: 'Montserrat';
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.action-button:hover {
+    opacity: 0.85;
+}
+
+.action-button img {
+    width: 32px;
+    height: 32px;
+}
+
+/* Cores específicas para cada botão */
+.action-button--add {
+    background-color: #8DBC8A; /* Verde */
+
+}
+
+.action-button--delete {
+    background-color: #E88D83; /* Vermelho/Salmão */
+}
+
+.action-button--edit {
+    background-color: #E1B07E; /* Laranja/Ocre */
+}
+
+
+/* --- CONTAINER DA TABELA --- */
+.table-container {
+    background-color: #FFF;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+/* --- TABELA --- */
+.client-table {
+    width: 100%;
+    border-collapse: collapse; /* Remove o espaço entre as bordas das células */
+}
+
+/* Cabeçalho da tabela */
+.client-table thead th {
+    text-align: left;
+    padding: 15px;
+    color: var(--cor-texto-secundario);
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    border-bottom: 2px solid #F0F0F0;
+}
+
+/* Corpo e células da tabela */
+.client-table tbody td {
+    padding: 15px;
+    border-bottom: 1px solid #F0F0F0;
+    color: var(--cor-texto-principal);
+    vertical-align: middle;
+}
+
+/* Remove a borda da última linha para um visual mais limpo */
+.client-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* Efeito de hover nas linhas para melhor usabilidade */
+.client-table tbody tr:hover {
+    background-color: var(--cor-fundo-cards);
+}
+
+/* Estilo para o checkbox */
+.client-table input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+}
+
+/* Estilo para a badge de Status */
+.status-badge {
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #fff;
+}
+
+.status-badge--active {
+    background-color: #28a745; /* Verde para 'Ativo' */
+}
+
+.status-badge--inactive {
+    background-color: #6c757d; /* Cinza para 'Inativo' */
 }
 
