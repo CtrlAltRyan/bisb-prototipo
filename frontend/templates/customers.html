@@ -1,0 +1,32 @@
+<!-- 1. Herda tudo do nosso esqueleto -->
+{% extends 'layout_painel.html' %}
+
+<!-- 2. Preenche o bloco do título da aba -->
+{% block title %}Clientes{% endblock %}
+
+<!-- 3. Preenche o bloco do cabeçalho da página -->
+{% block page_header %}
+<div class="page-header__title-group">
+    <img src="{{ url_for('static', filename='images/customers_icon.png') }}" class="page-header__icon">
+    <h1 class="page-header__title">Clientes</h1>
+</div>
+{% endblock %}
+
+<!-- 4. Preenche o bloco com a tabela de clientes -->
+{% block table_content %}
+    <table class="client-table">
+        <thead>
+            <tr>
+                <th><input type="checkbox" aria-label="Selecionar todos"></th>
+                <th>Nome do Cliente</th>
+                <th>Email</th>
+                <th>Telefone</th>
+                <th>Status</th>
+                <th>Última Visita</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Loop para mostrar os dados dos clientes viria aqui -->
+        </tbody>
+    </table>
+{% endblock %}

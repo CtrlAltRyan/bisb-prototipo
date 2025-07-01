@@ -1,0 +1,27 @@
+{% extends 'layout_painel.html' %}
+
+{% block title %}Serviços{% endblock %}
+
+{% block page_header %}
+<div class="page-header__title-group">
+    <img src="{{ url_for('static', filename='images/services_icon.png') }}" class="page-header__icon">
+    <h1 class="page-header__title">Serviços</h1>
+</div>
+{% endblock %}
+
+{% block table_content %}
+    <table class="client-table">
+        <thead>
+            <tr>
+                <th><input type="checkbox" aria-label="Selecionar todos"></th>
+                <th>Nome do Serviço</th>
+                <th>Duração</th>
+                <th>Preço</th>
+                <!-- Outras colunas de serviço... -->
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Loop para mostrar os dados dos serviços viria aqui -->
+        </tbody>
+    </table>
+{% endblock %}

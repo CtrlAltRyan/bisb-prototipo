@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - BISB Consultoria</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <link rel="icon" href="{{ url_for('static', filename='images/logo_browser.png') }}" type="image/x-icon">
+</head>
+<body>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div id="toast-notification" class="toast">
+                {{ messages[0] }}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <div class="main-container">
+        <section class="branding-section">
+            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo BISB Consultoria" class="logo-image">
+        </section>
+
+        <div class="vertical-divider"></div>
+
+        <section class="login-section">
+            <form class="login-form" method="POST" action="{{ url_for('login_page') }}">
+                <h3>Entre na sua conta</h3>
+                <p>Insira seu usuário e sua senha para<br>entrar na sua conta</p>
+                
+                <div class="input-group">
+                    <input type="text" id="user" name="user" placeholder="usuário" required>
+                </div>
+                
+                <div class="input-group">
+                    <input type="password" id="password" name="password" placeholder="senha" required>
+                </div>
+                
+                <button type="submit" class="btn-signin">ENTRAR</button>
+
+                <div class="form-links">
+                    <p>Para criar sua conta, clique <a href="{{ url_for('register_page') }}">aqui</a>.</p>
+                    <p>Esqueceu sua senha? Clique <a href="{{ url_for('reset_password_page') }}">aqui</a>.</p>
+                </div>
+            </form>
+        </section>
+    </div>
+
+     <script>
+        window.onload = function() {
+            const toast = document.getElementById('toast-notification');
+            if (toast) {
+                setTimeout(() => {
+                    toast.classList.add('show');
+                }, 100);
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 4000);
+            }
+        };
+    </script>
+</body>
+</body>
+</html>

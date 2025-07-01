@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - BISB Consultoria</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+</head>
+<body>
+
+    <div class="dashboard-container">
+        
+        <aside class="sidebar">
+            <div class="sidebar__logo">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo BISB Consultoria">
+            </div>
+
+            <nav class="sidebar__navigation">
+                <ul>
+                    <li class="sidebar__item"> 
+                        <a class="sidebar__link" href="{{ url_for('customers_page') }}">
+                            <img src="{{ url_for('static', filename='images/customers_icon.png') }}" alt="" class="sidebar__icon">
+                            <span>Clientes</span>
+                        </a>
+                    </li>
+                    <li class="sidebar__item" >
+                        <a class="sidebar__link" href="{{ url_for('services_page') }}">
+                            <img src="{{ url_for('static', filename='images/services_icon.png') }}" alt="" class="sidebar__icon">
+                            <span>Serviços</span>
+                        </a>
+                    </li>
+                    <li class="sidebar__item" >
+                        <a class="sidebar__link" href="{{ url_for('sales_page') }}">
+                            <img src="{{ url_for('static', filename='images/sales_icon.png') }}" alt="" class="sidebar__icon">
+                            <span>Vendas</span>
+                        </a>
+                    </li>
+                    <li class="sidebar__item">
+                        <a class="sidebar__link">
+                            <img src="{{ url_for('static', filename='images/support_icon.png') }}" alt="" class="sidebarsupport__icon">
+                            <span>Suporte</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+            <div class="sidebar__logout">
+                <a class="sidebar__link" href="{{ url_for('login_page') }}">
+                    <img src="{{ url_for('static', filename='images/logout_icon.png') }}" alt="" class="sidebar__icon">
+                    <span>Sair</span> 
+                </a>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            
+            <header class="main-header">
+                <div class="main-header__welcome">
+                    <h1>Bem-vindo, {usuario}!</h1>
+                </div>
+                <div class="main-header__actions">
+                    <div class="search-bar">
+                        <input type="search" placeholder="Pesquisar...">
+                        <button class="search-bar__button" aria-label="Buscar">
+                            <img src="{{ url_for('static', filename='images/search_icon.png') }}" alt="Ícone de Pesquisa" class="search-bar__icon">
+                        </button>
+                    </div>
+                    <div class="user-profile">
+                        <button class="user-profile__button" aria-label="Opções do Usuário">
+                            <img src="{{ url_for('static', filename='images/default_pfp.png') }}" alt="Avatar do Usuário" class="user-profile__avatar">
+                            <img src="{{ url_for('static', filename='images/optionspfp_icon.png') }}" alt="Abrir menu" class="user-profile__dropdown-icon">
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            <section class="info-cards">
+                <div class="card card--sales">
+                    <h3 class="card__title">Vendas Mensais</h3>
+                    <p class="card__value">R$ 2.870,00</p>
+                </div>
+                <div class="card card--clients">
+                    <h3 class="card__title">Clientes Atuais</h3>
+                    <p class="card__value">60</p>
+                </div>
+                <div class="card card--active-clients">
+                    <h3 class="card__title">Clientes Ativos <small>no mês atual</small></h3>
+                    <p class="card__value">
+                        78,33%
+                        <img src="{{ url_for('static', filename='images/Arrow 1.svg') }}"alt="Ícone de Seta para Cima">
+                    </p>
+                </div>
+                <div class="card card--most-sold">
+                    <h3 class="card__title">Serviço mais vendido <small>no mês atual</small></h3>
+                    <p class="card__value">Escova</p>
+                </div>
+            </section>
+
+            <section class="charts-section">
+                <div class="chart-container">
+                    <h2 class="chart-container__title">Fluxo de caixa</h2>
+                    <img src="caminho/para/grafico-fluxo-de-caixa.png" alt="Gráfico de colunas mostrando o fluxo de caixa" class="chart-container__image">
+                </div>
+                <div class="chart-container">
+                    <h2 class="chart-container__title">Vendas por serviço</h2>
+                    <img src="caminho/para/grafico-vendas-por-servico.png" alt="Gráfico de rosca mostrando a distribuição de vendas por serviço" class="chart-container__image">
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+</body>
+</html>
