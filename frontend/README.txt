@@ -1,1 +1,0 @@
-Esta pasta deve conter os arquivos do frontend (interface visual), como HTML, CSS, JavaScript ou React.
