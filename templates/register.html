@@ -44,7 +44,7 @@
                     {% endif %}
                 {% endwith %}
                 
-                <form method="POST" action="{{ url_for('register_page') }}" id="resetForm">
+                <form method="POST" action="{{ url_for('auth.register_page') }}" id="resetForm">
                     <div class="reset-form-group">
                         <input type="text" name="name" class="reset-form-input" placeholder="nome" required>
                     </div>

@@ -1,0 +1,37 @@
+{% extends 'layout_painel.html' %}
+
+{% block title %}Vendas{% endblock %}
+
+{% block page_header %}
+<div class="page-header__title-group">
+    <img src="{{ url_for('static', filename='images/sales_icon.png') }}" class="page-header__icon">
+    <h1 class="page-header__title">Vendas</h1>
+</div>
+{% endblock %}
+
+{% block table_content %}
+    <table class="client-table">
+        <thead>
+            <tr>
+                <th><input type="checkbox" aria-label="Selecionar todos"></th>
+                <th>ID Cliente</th>
+                <th>ID Serviço</th>
+                <th>Valor</th>
+                <th>Forma de Pagamento</th>
+                <th>Data</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for venda in sales %}
+            <tr>
+                <td><input type="checkbox" aria-label="Selecionar"></td>
+                <td>{{ venda[0] }}</td> <!-- ID Cliente -->
+                <td>{{ venda[1] }}</td> <!-- ID Serviço -->
+                <td>{{ venda[2] }}</td> <!-- Valor -->
+                <td>{{ venda[3] }}</td> <!-- Forma de Pagamento -->
+                <td>{{ venda[4] }}</td> <!-- Data da venda -->
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

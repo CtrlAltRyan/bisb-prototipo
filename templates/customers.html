@@ -18,15 +18,26 @@
         <thead>
             <tr>
                 <th><input type="checkbox" aria-label="Selecionar todos"></th>
+                <th>ID</th>
                 <th>Nome do Cliente</th>
                 <th>Email</th>
                 <th>Telefone</th>
-                <th>Status</th>
-                <th>Última Visita</th>
+                <th>DOB</th>
+                <th>Bairro</th>
             </tr>
         </thead>
         <tbody>
-            <!-- Loop para mostrar os dados dos clientes viria aqui -->
+            {% for cliente in clientes %}
+            <tr>
+                <td><input type="checkbox" aria-label="Selecionar"></td>
+                <td>{{ cliente[0] }}</td>
+                <td>{{ cliente[1] }}</td> <!-- Nome -->
+                <td>{{ cliente[2] }}</td> <!-- Email -->
+                <td>{{ cliente[3] }}</td> <!-- Telefone -->
+                <td>{{ cliente[4] }}</td> <!-- DOB -->
+                <td>{{ cliente[5] }}</td> <!-- Bairro -->
+            </tr>
+            {% endfor %}
         </tbody>
     </table>
 {% endblock %}

@@ -1,6 +1,4 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, send_file
-import matplotlib.pyplot as plt
-import os
 
 app = Flask(__name__)
 
