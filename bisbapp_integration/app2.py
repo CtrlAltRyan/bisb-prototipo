@@ -12,7 +12,5 @@ app.register_blueprint(auth_bp, url_prefix='/auth')
 def root():
     return render_template('login.html')
 
-
-
 if __name__ == '__main__':
     app.run(debug=True)

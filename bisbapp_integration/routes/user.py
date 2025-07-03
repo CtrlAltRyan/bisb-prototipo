@@ -1,11 +1,7 @@
-from flask import Blueprint, render_template, session, redirect
+from flask import Blueprint, render_template, session, redirect, url_for, flash
 from flask_login import login_required
 
 user_bp = Blueprint('user', __name__, template_folder='templates')
-
-@user_bp.route('/')
-def root():
-    return render_template('home.html')
 
 @user_bp.route('/customers')
 def customers_page():
@@ -25,5 +21,6 @@ def sales_page():
 
 @user_bp.before_request
 def check_authentication():
+    flash('Você precisa estar logado')
     if 'token' not in session:
-        return redirect('/auth')
+        return redirect(url_for('auth.login_page'))
