@@ -14,15 +14,24 @@
         <thead>
             <tr>
                 <th><input type="checkbox" aria-label="Selecionar todos"></th>
-                <th>ID da Venda</th>
-                <th>Cliente</th>
+                <th>ID Cliente</th>
+                <th>ID Serviço</th>
+                <th>Valor</th>
+                <th>Forma de Pagamento</th>
                 <th>Data</th>
-                <th>Valor Total</th>
-                <th>Status do Pagamento</th>
             </tr>
         </thead>
         <tbody>
-            <!-- Loop para mostrar os dados das vendas viria aqui -->
+            {% for venda in sales %}
+            <tr>
+                <td><input type="checkbox" aria-label="Selecionar"></td>
+                <td>{{ venda[0] }}</td> <!-- ID Cliente -->
+                <td>{{ venda[1] }}</td> <!-- ID Serviço -->
+                <td>{{ venda[2] }}</td> <!-- Valor -->
+                <td>{{ venda[3] }}</td> <!-- Forma de Pagamento -->
+                <td>{{ venda[4] }}</td> <!-- Data da venda -->
+            </tr>
+            {% endfor %}
         </tbody>
     </table>
 {% endblock %}

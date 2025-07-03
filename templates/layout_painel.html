@@ -16,8 +16,11 @@
     
         <aside class="sidebar">
             <div class="sidebar__logo">
-                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo BISB Consultoria">
+                <a href="{{ url_for('user.home_page')}}">
+                    <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo BISB Consultoria">
+                </a>    
             </div>
+           
 
             <nav class="sidebar__navigation">
                 <ul>
@@ -49,7 +52,7 @@
             </nav>
 
             <div class="sidebar__logout">
-                <a href="{{url_for('user.home_page')}}" class="sidebar__link">
+                <a href="{{url_for('root')}}" class="sidebar__link">
                     <img src="{{ url_for('static', filename='images/logout_icon.png') }}" alt="" class="sidebar__icon">
                     <span>Sair</span>
                 </a>
