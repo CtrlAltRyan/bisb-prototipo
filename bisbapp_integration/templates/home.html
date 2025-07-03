@@ -22,19 +22,19 @@
             <nav class="sidebar__navigation">
                 <ul>
                     <li class="sidebar__item"> 
-                        <a class="sidebar__link" href="{{ url_for('customers_page') }}">
+                        <a class="sidebar__link" href="{{ url_for('user.customers_page') }}">
                             <img src="{{ url_for('static', filename='images/customers_icon.png') }}" alt="" class="sidebar__icon">
                             <span>Clientes</span>
                         </a>
                     </li>
                     <li class="sidebar__item" >
-                        <a class="sidebar__link" href="{{ url_for('services_page') }}">
+                        <a class="sidebar__link" href="{{ url_for('user.services_page') }}">
                             <img src="{{ url_for('static', filename='images/services_icon.png') }}" alt="" class="sidebar__icon">
                             <span>Serviços</span>
                         </a>
                     </li>
                     <li class="sidebar__item" >
-                        <a class="sidebar__link" href="{{ url_for('sales_page') }}">
+                        <a class="sidebar__link" href="{{ url_for('user.sales_page') }}">
                             <img src="{{ url_for('static', filename='images/sales_icon.png') }}" alt="" class="sidebar__icon">
                             <span>Vendas</span>
                         </a>
@@ -49,7 +49,7 @@
             </nav>
 
             <div class="sidebar__logout">
-                <a class="sidebar__link" href="{{ url_for('login_page') }}">
+                <a class="sidebar__link" href="{{ url_for('auth.login_page') }}">
                     <img src="{{ url_for('static', filename='images/logout_icon.png') }}" alt="" class="sidebar__icon">
                     <span>Sair</span> 
                 </a>
