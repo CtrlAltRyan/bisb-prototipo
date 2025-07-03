@@ -88,7 +88,7 @@
             </header>
 
             <section class="table-actions">
-                <button class="action-button action-button--add">
+                <button class="action-button action-button--add" id="btn-adicionar">
                     <img src="{{ url_for('static', filename='images/add_icon.png') }}" alt="">
                     <span>Adicionar</span>
                 </button>
@@ -112,5 +112,8 @@
         </main>
     </div>
 
+</div>
+{% block modal_content %}
+    {% endblock modal_content %}
 </body>
 </html>

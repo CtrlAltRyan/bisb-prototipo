@@ -57,7 +57,7 @@ def sales_page():
             v.forma_pagamento,
             v.data_venda,
             c.nome AS nome_cliente,
-            c.nome AS nome_servico
+            s.nome_servico AS nome_servico
         FROM salao.vendas v
         JOIN salao.clientes c ON v.id_cliente = c.id
         JOIN salao.servicos s ON v.id_servico = s.id

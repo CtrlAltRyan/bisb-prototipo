@@ -31,47 +31,39 @@
                 <!-- ID Serviço com nome no popover -->
                 <td class="popover-trigger" data-popover="Serviço: {{ venda[6] }}">{{ venda[1] }}</td>
                 
-                <td>{{ venda[2] }}</td> <!-- Valor -->
+                <td>R$ {{ venda[2] }}</td> <!-- Valor -->
                 <td>{{ venda[3] }}</td> <!-- Forma de pagamento -->
-                <td>{{ venda[4] }}</td> <!-- Data -->
+                <td class="data-a-formatar"> {{ venda[4] }}</td> <!-- Data -->
             </tr>
             {% endfor %}
         </tbody>
     </table>
-    <script>
-document.addEventListener('DOMContentLoaded', () => {
-    document.querySelectorAll('.popover-trigger').forEach(el => {
-        el.addEventListener('mouseenter', () => {
-            const tooltip = document.createElement('div');
-            tooltip.className = 'custom-tooltip';
-            tooltip.innerText = el.dataset.popover;
-            document.body.appendChild(tooltip);
-
-            const rect = el.getBoundingClientRect();
-            tooltip.style.left = rect.left + 'px';
-            tooltip.style.top = (rect.top - tooltip.offsetHeight - 10) + 'px';
-        });
-
-        el.addEventListener('mouseleave', () => {
-            const tooltip = document.querySelector('.custom-tooltip');
-            if (tooltip) tooltip.remove();
-        });
-    });
-});
-</script>
-
-<style>
-.custom-tooltip {
-    position: absolute;
-    background-color: #333;
-    color: #fff;
-    font-size: 0.85rem;
-    padding: 5px 8px;
-    border-radius: 5px;
-    z-index: 1000;
-    pointer-events: none;
-}
-</style>
-
 
 {% endblock %}
+
+{% block modal_content %}
+  <div class="modal modal-alvo">
+    <div class="modal-conteudo">
+      <span class="fechar-modal">&times;</span>
+      <h2>Adicionar Nova Venda</h2>
+      <form id="form-adicionar-venda">
+        <label for="id-servico">ID Cliente:</label>
+        <input type="number" id="id-servico" name="id-servico">
+        
+        <label for="valor">ID Serviço:</label>
+        <input type="text" id="valor" name="valor">
+
+        <label for="valor">Valor (R$):</label>
+        <input type="number" id="valor" name="valor">
+
+        <label for="valor">Forma de Pagamento:</label>
+        <input type="text" id="valor" name="valor">
+        
+        <label for="valor">Data:</label>
+        <input type="date" id="valor" name="valor">
+
+        <button type="submit">Salvar Venda</button>
+      </form>
+    </div>
+  </div>
+{% endblock modal_content %}

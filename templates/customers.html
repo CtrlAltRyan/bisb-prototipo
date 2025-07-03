@@ -20,8 +20,8 @@
                 <th><input type="checkbox" id="select-all" aria-label="Selecionar todos"></th>
                 <th>ID</th>
                 <th>Nome do Cliente</th>
-                <th>Email</th>
                 <th>Telefone</th>
+                <th>Email</th>
                 <th>DOB</th>
                 <th>Bairro</th>
             </tr>
@@ -34,10 +34,37 @@
                 <td>{{ cliente[1] }}</td> <!-- Nome -->
                 <td>{{ cliente[2] }}</td> <!-- Email -->
                 <td>{{ cliente[3] }}</td> <!-- Telefone -->
-                <td>{{ cliente[4] }}</td> <!-- DOB -->
+                <td class="data-a-formatar">{{ cliente[4] }}</td> <!-- DOB -->
                 <td>{{ cliente[5] }}</td> <!-- Bairro -->
             </tr>
             {% endfor %}
         </tbody>
     </table>
 {% endblock %}
+
+{% block modal_content %}
+  <div class="modal modal-alvo">
+    <div class="modal-conteudo">
+      <span class="fechar-modal">&times;</span>
+      <h2>Adicionar Novo Cliente</h2>
+      <form id="form-adicionar-cliente">
+        <label for="nome-cliente">Nome do Cliente:</label>
+        <input type="text" id="nome-cliente" name="nome" required>
+
+        <label for="email-cliente">Email:</label>
+        <input type="email" id="email-cliente" name="email">
+
+        <label for="telefone-cliente">Telefone:</label>
+        <input type="text" id="telefone-cliente" name="telefone">
+
+        <label for="dob-cliente">Data de Nascimento (DOB):</label>
+        <input type="date" id="dob-cliente" name="dob">
+
+        <label for="bairro-cliente">Bairro:</label>
+        <input type="text" id="bairro-cliente" name="bairro">
+
+        <button type="submit" class="btn-salvar">Salvar Cliente</button>
+      </form>
+    </div>
+  </div>
+{% endblock modal_content %}

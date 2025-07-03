@@ -26,9 +26,30 @@
                 <td><input type="checkbox" class="row-checkbox" aria-label="Selecionar"></td>
                 <td>{{ service[0] }}</td> <!-- ID -->
                 <td>{{ service[1] }}</td> <!-- Nome -->
-                <td>{{ service[2] }}</td> <!-- Preço -->
+                <td>R$ {{ service[2] }}</td> <!-- Preço -->
             </tr>
             {% endfor %}
         </tbody>
     </table>
 {% endblock %}
+
+{% block modal_content %}
+  <div class="modal modal-alvo"> 
+    <div class="modal-conteudo">
+      <span class="fechar-modal">&times;</span>
+      <h2>Adicionar Novo Serviço</h2>
+      
+      <form id="form-adicionar-servico">
+        
+        <label for="nome-servico">Nome do Serviço:</label>
+        <input type="text" id="nome-servico" name="nome-servico" placeholder="Ex: Corte Feminino" required>
+        
+        <label for="preco-servico">Preço (R$):</label>
+        <input type="text" id="preco-servico" name="preco-servico" placeholder="Ex: 60.00" required>
+        
+        <button type="submit" class="btn-salvar">Salvar Serviço</button>
+      </form>
+
+    </div>
+  </div>
+{% endblock modal_content %}

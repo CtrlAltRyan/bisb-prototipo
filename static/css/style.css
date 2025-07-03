@@ -866,6 +866,7 @@ a {
     font-weight: 600;
     text-transform: uppercase;
     border-bottom: 2px solid #F0F0F0;
+    
 }
 
 /* Corpo e células da tabela */
@@ -874,6 +875,7 @@ a {
     border-bottom: 1px solid #F0F0F0;
     color: var(--cor-texto-principal);
     vertical-align: middle;
+    
 }
 
 /* Remove a borda da última linha para um visual mais limpo */
@@ -909,3 +911,96 @@ a {
     background-color: #6c757d; /* Cinza para 'Inativo' */
 }
 
+.custom-tooltip {
+    position: absolute;
+    background-color: #333;
+    color: #fff;
+    font-size: 0.85rem;
+    padding: 5px 8px;
+    border-radius: 5px;
+    z-index: 1000;
+    pointer-events: none;
+}
+
+/* O fundo escuro (overlay) do modal */
+.modal {
+  display: none; /* Escondido por padrão */
+  position: fixed; /* Fica fixo na tela */
+  z-index: 1000; /* Garante que fique na frente de tudo */
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto; /* Adiciona scroll se o conteúdo for grande */
+  background-color: rgba(0, 0, 0, 0.5); /* Fundo preto com 50% de opacidade */
+
+  /* Para centralizar o conteúdo com Flexbox */
+  justify-content: center;
+  align-items: center;
+}
+
+/* A caixa de conteúdo do modal */
+.modal-conteudo {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px 30px;
+  border: 1px solid #888;
+  width: 80%;
+  max-width: 500px; /* Largura máxima */
+  border-radius: 10px;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  position: relative;
+  animation: animatetop 0.4s; /* Efeito de animação ao abrir */
+}
+
+/* Animação de slide-down */
+@keyframes animatetop {
+  from {top: -300px; opacity: 0}
+  to {top: 0; opacity: 1}
+}
+
+/* O botão de fechar (X) */
+.fechar-modal {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.fechar-modal:hover,
+.fechar-modal:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* Estilos para o formulário dentro do modal (opcional, ajuste como quiser) */
+#form-adicionar-venda label {
+    display: block;
+    margin-top: 15px;
+    font-weight: bold;
+}
+
+#form-adicionar-venda input, 
+#form-adicionar-venda select {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+#form-adicionar-venda .btn-salvar {
+    width: 100%;
+    padding: 12px;
+    margin-top: 20px;
+    background-color: #4CAF50; /* Cor verde */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+#form-adicionar-venda .btn-salvar:hover {
+    background-color: #45a049;
+}
