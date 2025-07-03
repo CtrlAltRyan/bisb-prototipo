@@ -60,7 +60,7 @@
             
             <header class="main-header">
                 <div class="main-header__welcome">
-                    <h1>Bem-vindo, {usuario}!</h1>
+                    <h1>Bem-vindo, {{ session['user'] }}!</h1>
                 </div>
                 <div class="main-header__actions">
                     <div class="search-bar">
@@ -81,22 +81,21 @@
             <section class="info-cards">
                 <div class="card card--sales">
                     <h3 class="card__title">Vendas Mensais</h3>
-                    <p class="card__value">R$ 2.870,00</p>
+                    <p class="card__value">R$ {{montante}}</p>
                 </div>
                 <div class="card card--clients">
                     <h3 class="card__title">Clientes Atuais</h3>
-                    <p class="card__value">60</p>
+                    <p class="card__value">{{clientesnum}}</p>
                 </div>
                 <div class="card card--active-clients">
                     <h3 class="card__title">Clientes Ativos <small>no mês atual</small></h3>
-                    <p class="card__value">
-                        78,33%
+                    <p class="card__value"> {{clientesnum}}
                         <img src="{{ url_for('static', filename='images/Arrow 1.svg') }}"alt="Ícone de Seta para Cima">
                     </p>
                 </div>
                 <div class="card card--most-sold">
                     <h3 class="card__title">Serviço mais vendido <small>no mês atual</small></h3>
-                    <p class="card__value">Escova</p>
+                    <p class="card__value">{{servico_mais_vendido}}</p>
                 </div>
             </section>
 

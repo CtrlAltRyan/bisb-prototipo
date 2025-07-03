@@ -2,6 +2,7 @@ from flask import Flask, render_template, url_for
 from routes.user import user_bp
 from routes.auth import auth_bp
 
+
 app = Flask(__name__)
 app.secret_key  = '123'
 
@@ -14,3 +15,4 @@ def root():
 
 if __name__ == '__main__':
     app.run(debug=True)
+    
