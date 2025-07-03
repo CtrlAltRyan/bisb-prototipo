@@ -1,5 +1,4 @@
 from flask import Blueprint, render_template, session, redirect, url_for, flash
-from flask_login import login_required
 from .info import get_topservice, get_amount, get_customersnum
 from connection import get_db_connection
 
@@ -51,9 +50,20 @@ def sales_page():
     cur = conn.cursor()
 
     cur.execute("""
-        SELECT id_cliente, id_servico, valor, forma_pagamento, data_venda
-        FROM salao.vendas;
+        SELECT 
+            v.id_cliente,
+            v.id_servico,
+            v.valor,
+            v.forma_pagamento,
+            v.data_venda,
+            c.nome AS nome_cliente,
+            c.nome AS nome_servico
+        FROM salao.vendas v
+        JOIN salao.clientes c ON v.id_cliente = c.id
+        JOIN salao.servicos s ON v.id_servico = s.id
+        ORDER BY v.data_venda DESC;
     """)
+    
     sales = cur.fetchall()
 
     cur.close()

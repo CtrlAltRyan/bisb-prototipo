@@ -13,7 +13,7 @@
     <table class="client-table">
         <thead>
             <tr>
-                <th><input type="checkbox" aria-label="Selecionar todos"></th>
+                <th><input type="checkbox" id="select-all" aria-label="Selecionar todos"></th>
                 <th>ID Cliente</th>
                 <th>ID Serviço</th>
                 <th>Valor</th>
@@ -24,14 +24,54 @@
         <tbody>
             {% for venda in sales %}
             <tr>
-                <td><input type="checkbox" aria-label="Selecionar"></td>
-                <td>{{ venda[0] }}</td> <!-- ID Cliente -->
-                <td>{{ venda[1] }}</td> <!-- ID Serviço -->
+                <td><input type="checkbox" class="row-checkbox" aria-label="Selecionar"></td>
+                <!-- ID Cliente com nome no popover -->
+                <td class="popover-trigger" data-popover="Cliente: {{ venda[5] }}">{{ venda[0] }}</td>
+                
+                <!-- ID Serviço com nome no popover -->
+                <td class="popover-trigger" data-popover="Serviço: {{ venda[6] }}">{{ venda[1] }}</td>
+                
                 <td>{{ venda[2] }}</td> <!-- Valor -->
-                <td>{{ venda[3] }}</td> <!-- Forma de Pagamento -->
-                <td>{{ venda[4] }}</td> <!-- Data da venda -->
+                <td>{{ venda[3] }}</td> <!-- Forma de pagamento -->
+                <td>{{ venda[4] }}</td> <!-- Data -->
             </tr>
             {% endfor %}
         </tbody>
     </table>
+    <script>
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.popover-trigger').forEach(el => {
+        el.addEventListener('mouseenter', () => {
+            const tooltip = document.createElement('div');
+            tooltip.className = 'custom-tooltip';
+            tooltip.innerText = el.dataset.popover;
+            document.body.appendChild(tooltip);
+
+            const rect = el.getBoundingClientRect();
+            tooltip.style.left = rect.left + 'px';
+            tooltip.style.top = (rect.top - tooltip.offsetHeight - 10) + 'px';
+        });
+
+        el.addEventListener('mouseleave', () => {
+            const tooltip = document.querySelector('.custom-tooltip');
+            if (tooltip) tooltip.remove();
+        });
+    });
+});
+</script>
+
+<style>
+.custom-tooltip {
+    position: absolute;
+    background-color: #333;
+    color: #fff;
+    font-size: 0.85rem;
+    padding: 5px 8px;
+    border-radius: 5px;
+    z-index: 1000;
+    pointer-events: none;
+}
+</style>
+
+
 {% endblock %}

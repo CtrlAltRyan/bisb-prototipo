@@ -13,7 +13,7 @@
     <table class="client-table">
         <thead>
             <tr>
-                <th><input type="checkbox" aria-label="Selecionar todos"></th>
+                <th><input type="checkbox" id="select-all" aria-label="Selecionar todos"></th>
                 <th>ID</th>
                 <th>Nome do Serviço</th>
                 <th>Preço</th>
@@ -23,7 +23,7 @@
         <tbody>
             {% for service in services %}
             <tr>
-                <td><input type="checkbox" aria-label="Selecionar"></td>
+                <td><input type="checkbox" class="row-checkbox" aria-label="Selecionar"></td>
                 <td>{{ service[0] }}</td> <!-- ID -->
                 <td>{{ service[1] }}</td> <!-- Nome -->
                 <td>{{ service[2] }}</td> <!-- Preço -->
