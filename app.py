@@ -1,7 +1,7 @@
 from flask import Flask, render_template, url_for, request, jsonify
 from routes.user import user_bp
 from routes.auth import auth_bp
-from database.update_table import salvar_cliente_no_banco, salvar_servico_no_banco, salvar_vendas_no_banco
+from database.update_table import *
 import traceback
 
 
@@ -99,6 +99,60 @@ def adicionar_venda():
         traceback.print_exc()
         return jsonify({'success': False, 'message': 'Erro no servidor'}), 500
     
+ 
+@app.route('/clientes/excluir', methods=['POST'])
+def excluir_cliente():
+    dados = request.get_json()
+    ids_para_excluir_str = dados.get('ids') # Recebemos uma lista de strings, ex: ['68', '70']
+
+    if not ids_para_excluir_str or not isinstance(ids_para_excluir_str, list):
+        return jsonify({'success': False, 'message': 'Nenhum ID foi fornecido para exclusão.'}), 400
+
+    try:
+        # --- CORREÇÃO AQUI ---
+        # Converte cada item da lista de string para inteiro.
+        ids_para_excluir_int = [int(id_str) for id_str in ids_para_excluir_str]
+
+        # Agora passamos a lista de inteiros para a função do banco.
+        excluir_clientes_no_banco(ids_para_excluir_int)
+        
+        return jsonify({'success': True, 'message': 'Clientes excluídos com sucesso!'})
+
+    except ValueError:
+        # Este erro acontece se um dos IDs não for um número válido
+        return jsonify({'success': False, 'message': 'Um ou mais IDs fornecidos são inválidos.'}), 400
+    except Exception as e:
+        print(f"Erro ao excluir no banco de dados: {e}")
+        return jsonify({'success': False, 'message': 'Erro interno no servidor.'}), 500
+
+@app.route('/servicos/excluir', methods=['POST'])
+def excluir_servico():
+
+    dados = request.get_json()
+    ids_para_excluir = dados.get('ids')
+    
+    try:
+        excluir_servicos_no_banco(ids_para_excluir) 
+        return jsonify({'success': True})
+    except Exception as e:
+        return jsonify({'success': False, 'message': 'Erro no servidor.'}), 500
+    
+
+@app.route('/vendas/excluir', methods=['POST'])
+def excluir_venda():
+    dados = request.get_json()
+    ids_para_excluir = dados.get('ids')
+    
+    # ... (validação) ...
+
+    try:
+        # CORREÇÃO: Chame a função correta para excluir VENDAS
+        excluir_vendas_no_banco(ids_para_excluir) 
+        
+        return jsonify({'success': True, 'message': 'Venda(s) excluída(s) com sucesso!'})
+    except Exception as e:
+        print(f"Erro ao excluir no banco de dados: {e}")
+        return jsonify({'success': False, 'message': 'Erro interno no servidor.'}), 500
     
 if __name__ == '__main__':
     app.run(debug=True)

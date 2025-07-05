@@ -23,7 +23,7 @@
         <tbody>
             {% for service in services %}
             <tr>
-                <td><input type="checkbox" class="row-checkbox" aria-label="Selecionar"></td>
+                <td><input type="checkbox" class="row-checkbox"  data-id="{{ service[0] }}" aria-label="Selecionar"></td>
                 <td>{{ service[0] }}</td> <!-- ID -->
                 <td>{{ service[1] }}</td> <!-- Nome -->
                 <td>R$ {{ service[2] }}</td> <!-- Preço -->

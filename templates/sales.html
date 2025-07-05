@@ -24,7 +24,7 @@
         <tbody>
             {% for venda in sales %}
             <tr>
-                <td><input type="checkbox" class="row-checkbox" aria-label="Selecionar"></td>
+                <td><input type="checkbox" class="row-checkbox" aria-label="Selecionar" data-id="{{ venda[0] }}"></td>
                 <!-- ID Cliente com nome no popover -->
                 <td class="popover-trigger" data-popover="Cliente: {{ venda[5] }}">{{ venda[0] }}</td>
                 

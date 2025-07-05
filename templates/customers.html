@@ -29,7 +29,7 @@
         <tbody>
             {% for cliente in clientes %}
             <tr>
-                <td><input type="checkbox" class="row-checkbox" aria-label="Selecionar"></td>
+                <td><input type="checkbox" class="row-checkbox" data-id="{{ cliente[0] }}" aria-label="Selecionar"></td>
                 <td>{{ cliente[0] }}</td>
                 <td>{{ cliente[1] }}</td> <!-- Nome -->
                 <td>{{ cliente[2] }}</td> <!-- Email -->
