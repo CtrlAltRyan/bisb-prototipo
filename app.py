@@ -109,11 +109,7 @@ def excluir_cliente():
         return jsonify({'success': False, 'message': 'Nenhum ID foi fornecido para exclusão.'}), 400
 
     try:
-        # --- CORREÇÃO AQUI ---
-        # Converte cada item da lista de string para inteiro.
         ids_para_excluir_int = [int(id_str) for id_str in ids_para_excluir_str]
-
-        # Agora passamos a lista de inteiros para a função do banco.
         excluir_clientes_no_banco(ids_para_excluir_int)
         
         return jsonify({'success': True, 'message': 'Clientes excluídos com sucesso!'})
@@ -130,29 +126,59 @@ def excluir_servico():
 
     dados = request.get_json()
     ids_para_excluir = dados.get('ids')
+    ids_para_excluir= [int(id_str) for id_str in ids_para_excluir]
     
     try:
         excluir_servicos_no_banco(ids_para_excluir) 
         return jsonify({'success': True})
     except Exception as e:
+        print("Erro completo:")
+        traceback.print_exc()
         return jsonify({'success': False, 'message': 'Erro no servidor.'}), 500
     
 
 @app.route('/vendas/excluir', methods=['POST'])
 def excluir_venda():
     dados = request.get_json()
-    ids_para_excluir = dados.get('ids')
-    
-    # ... (validação) ...
+    ids_para_excluir_str = dados.get('ids') # Recebe uma lista de STRINGS, ex: ['1', '5']
 
+    # Validação inicial
+    if not ids_para_excluir_str or not isinstance(ids_para_excluir_str, list) or len(ids_para_excluir_str) == 0:
+        return jsonify({'success': False, 'message': 'Nenhum ID foi fornecido para exclusão.'}), 400
+    
     try:
-        # CORREÇÃO: Chame a função correta para excluir VENDAS
-        excluir_vendas_no_banco(ids_para_excluir) 
+        # --- LINHA FUNDAMENTAL: CONVERSÃO DE TIPO ---
+        # Converte cada item da lista de strings para uma lista de inteiros.
+        ids_para_excluir_int = [int(id_str) for id_str in ids_para_excluir_str]
+
+        # Passa a lista de NÚMEROS para a função do banco
+        excluir_vendas_no_banco(ids_para_excluir_int) 
         
         return jsonify({'success': True, 'message': 'Venda(s) excluída(s) com sucesso!'})
+
+    except ValueError:
+        # Este erro acontece se um dos IDs no array não for um número (ex: 'abc')
+        return jsonify({'success': False, 'message': 'ID inválido na lista fornecida.'}), 400
     except Exception as e:
         print(f"Erro ao excluir no banco de dados: {e}")
         return jsonify({'success': False, 'message': 'Erro interno no servidor.'}), 500
+    
+
+@app.route('/vendas/editar', methods=['POST'])
+def editar_venda():
+    dados = request.get_json()
+    try:
+        id_venda = int(dados['id_venda'])
+        valor = float(dados['valor'])
+        forma = dados['forma_pagamento']
+        data = dados['data_venda']
+        editar_vendas_no_banco(valor, forma, data, id_venda)
+
+        return jsonify({'success': True})
+    except Exception as e:
+        print(f"Erro ao editar: {e}")
+        return jsonify({'success': False, 'message': 'Erro ao atualizar a venda'}), 500
+
     
 if __name__ == '__main__':
     app.run(debug=True)

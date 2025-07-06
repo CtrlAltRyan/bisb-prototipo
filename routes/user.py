@@ -50,7 +50,8 @@ def sales_page():
     cur = conn.cursor()
 
     cur.execute("""
-        SELECT 
+        SELECT
+            v.id,
             v.id_cliente,
             v.id_servico,
             v.valor,

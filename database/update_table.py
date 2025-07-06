@@ -92,12 +92,8 @@ def excluir_servicos_no_banco(lista_de_ids):
         conn = get_db_connection()
         cur = conn.cursor()
 
-        # Comando SQL para deletar múltiplos registros
-        # O operador 'ANY' permite comparar uma coluna com uma lista de valores
-        query = ("DELETE FROM salao.servicos WHERE id = ANY(%s)")
-        
-        # Executa a query passando a lista de IDs como um único parâmetro
-        # A vírgula após 'lista_de_ids' é importante para que o psycopg2 a entenda como uma tupla de um elemento
+
+        query = ("DELETE FROM salao.servicos WHERE id = ANY(%s)")       
         cur.execute(query, (lista_de_ids,))
         
         conn.commit()
@@ -105,21 +101,35 @@ def excluir_servicos_no_banco(lista_de_ids):
         if conn is not None:
             cur.close()
             conn.close()
-
 
 def excluir_vendas_no_banco(lista_de_ids):
     conn = None
+    cur = None
     try:
         conn = get_db_connection()
         cur = conn.cursor()
-        
-        # A query agora aponta para a tabela 'vendas'
-        query = ("DELETE FROM vendas WHERE id = ANY(%s)")
-        
+        query = "DELETE FROM salao.vendas WHERE id = ANY(%s)"
+     
         cur.execute(query, (lista_de_ids,))
         
         conn.commit()
     finally:
-        if conn is not None:
+        if cur is not None:
             cur.close()
+        if conn is not None:
             conn.close()
+    
+
+def editar_vendas_no_banco(valor, forma, data, id_venda):
+    conn = get_db_connection()
+    try:
+        cur = conn.cursor()
+        cur.execute("""
+            UPDATE salao.vendas
+            SET valor = %s, forma_pagamento = %s, data_venda = %s
+            WHERE id = %s
+        """, (valor, forma, data, id_venda))
+        conn.commit()
+    finally:
+        cur.close()
+        conn.close()
