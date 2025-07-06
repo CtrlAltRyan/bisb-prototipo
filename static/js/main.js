@@ -167,10 +167,117 @@ if (btnExcluir) {
             if (tooltip) tooltip.remove();
         });
     });
+// DENTRO DO SEU 'DOMContentLoaded' EM main.js
 
+const btnEditar = document.getElementById('btn-editar');
+if (btnEditar) {
+    btnEditar.addEventListener('click', () => {
+        const selecionados = document.querySelectorAll('.row-checkbox:checked');
+
+        if (selecionados.length !== 1) {
+            alert('Selecione exatamente um item para editar.');
+            return;
+        }
+
+        const checkbox = selecionados[0];
+        const idItem = checkbox.dataset.id;
+        const linha = checkbox.closest('tr');
+        const path = window.location.pathname;
+
+        let modalId = '';
+        let formId = '';
+
+        if (path.includes('/sales')) {
+            modalId = 'modal-editar-venda'; // <- Corresponde ao ID do modal no HTML
+            formId = 'editSaleForm';        // <- Corresponde ao ID do form no HTML
+            
+            // Preenchendo o formulário com os IDs corretos do seu HTML
+            document.getElementById('edit-id-venda').value = idItem;
+            document.getElementById('edit-id-cliente').value = linha.dataset.idCliente || '';
+            document.getElementById('edit-id-servico').value = linha.dataset.idServico || '';
+            document.getElementById('edit-valor').value = linha.dataset.valor || '';
+            document.getElementById('edit-forma-pagamento').value = linha.dataset.formaPagamento || '';
+            
+            // O input type="date" precisa do formato AAAA-MM-DD
+            const dataVenda = linha.dataset.dataVenda || '';
+            document.getElementById('edit-data-venda').value = formatarParaISO(dataVenda);
+
+        } else if (path.includes('/customers')) {
+        modalId = 'modal-editar-cliente';  // Você precisa criar este modal no HTML
+        urlEditar = '/clientes/editar';
+
+        // Preenche o modal de cliente
+        document.getElementById('edit-id-cliente').value = idItem;
+        document.getElementById('edit-nome-cliente').value = linha.dataset.nome || '';
+        document.getElementById('edit-email-cliente').value = linha.dataset.email || '';
+        // preencha mais campos conforme necessário
+
+        } else if (path.includes('/services')) {
+            modalId = 'modal-editar-servico';  // Você precisa criar este modal no HTML
+            urlEditar = '/servicos/editar';
+
+            // Preenche o modal de serviço
+            document.getElementById('edit-id-servico').value = idItem;
+            document.getElementById('edit-nome-servico').value = linha.dataset.nome || '';
+            document.getElementById('edit-preco-servico').value = linha.dataset.preco || '';
+        } else {
+            alert('Página desconhecida para editar.');
+            return;
+        }
+        
+        const modal = document.getElementById(modalId);
+        if (!modal) {
+            alert(`Erro: Modal com ID #${modalId} não encontrado.`);
+            return;
+        }
+
+        const formEditar = document.getElementById(formId);
+        if (!formEditar) {
+            alert(`Erro: Formulário com ID #${formId} não encontrado.`);
+            return;
+        }
+
+        // Remove listener antigo para evitar múltiplos envios
+        const novoForm = formEditar.cloneNode(true);
+        formEditar.parentNode.replaceChild(novoForm, formEditar);
+        
+        // Exibe o modal
+        modal.style.display = 'flex';
+        
+        // Adiciona o listener de submit ao novo formulário
+        novoForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const formData = new FormData(novoForm);
+            const dadosParaEnviar = Object.fromEntries(formData.entries());
+
+            fetch('/vendas/editar', { // URL está fixa pois esta lógica só roda na pág de vendas
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(dadosParaEnviar),
+            })
+            .then(res => {
+                if (!res.ok) throw new Error(`Erro na resposta do servidor: ${res.status}`);
+                return res.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    alert('Venda atualizada com sucesso!');
+                    location.reload();
+                } else {
+                    alert('Erro ao atualizar: ' + (data.message || 'Erro desconhecido.'));
+                }
+            })
+            .catch(err => {
+                console.error('Erro no fetch de edição:', err);
+                alert('Ocorreu um erro na requisição de edição. Veja o console.');
+            });
+        });
+    });
+}
 }); // Fim do listener principal 'DOMContentLoaded'
 
-ddocument.getElementById('btn-editar').addEventListener('click', () => {
+document.getElementById('btn-editar').addEventListener('click', () => {
     const selecionados = document.querySelectorAll('.row-checkbox:checked');
 
     if (selecionados.length === 0) {

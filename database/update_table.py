@@ -120,15 +120,19 @@ def excluir_vendas_no_banco(lista_de_ids):
             conn.close()
     
 
-def editar_vendas_no_banco(valor, forma, data, id_venda):
+def editar_vendas_no_banco(id_cliente, id_servico, valor, forma, data, id_venda):
     conn = get_db_connection()
     try:
         cur = conn.cursor()
         cur.execute("""
             UPDATE salao.vendas
-            SET valor = %s, forma_pagamento = %s, data_venda = %s
+            SET id_cliente = %s, 
+                id_servico = %s, 
+                valor = %s, 
+                forma_pagamento = %s, 
+                data_venda = %s
             WHERE id = %s
-        """, (valor, forma, data, id_venda))
+        """, (id_cliente, id_servico, valor, forma, data, id_venda))
         conn.commit()
     finally:
         cur.close()

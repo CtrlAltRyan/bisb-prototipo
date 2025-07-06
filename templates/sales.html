@@ -80,36 +80,31 @@
   </div>
 
   <!-- Modal de Editar -->
-  <div class="modal modal-alvo" id="modal-editar">
-    <div class="modal-conteudo">
-      <span class="fechar-modal">&times;</span>
-      <h2>Editar Venda</h2>
-      <form id="form-editar-venda" class="form-ajax-submit" data-url="/vendas/editar">
-        <input type="hidden" name="id_venda" id="edit-id-venda">
-        
-        <!-- Mesmos campos do outro -->
-        <label for="edit-id-cliente">ID do Cliente:</label>
-        <input type="number" id="edit-id-cliente" name="id_cliente" required>
+ <div class="modal modal-alvo" id="modal-editar-venda"> <div class="modal-conteudo">
+            <span class="fechar-modal">&times;</span>
+            <h2>Editar Venda</h2>
+            <form id="editSaleForm"> <input type="hidden" name="id_venda" id="edit-id-venda">
+                
+                <label for="edit-id-cliente">ID do Cliente:</label>
+                <input type="number" id="edit-id-cliente" name="id_cliente" required>
 
-        <label for="edit-id-servico">ID do Serviço:</label>
-        <input type="number" id="edit-id-servico" name="id_servico" required>
+                <label for="edit-id-servico">ID do Serviço:</label>
+                <input type="number" id="edit-id-servico" name="id_servico" required>
 
-        <label for="edit-valor">Valor (R$):</label>
-        <input type="number" id="edit-valor" name="valor" required>
+                <label for="edit-valor">Valor (R$):</label>
+                <input type="number" id="edit-valor" name="valor" step="0.01" required> <label for="edit-forma-pagamento">Forma de Pagamento:</label>
+                <select id="edit-forma-pagamento" name="forma_pagamento" required>
+                    <option value="Dinheiro">Dinheiro</option>
+                    <option value="Crédito">Crédito</option>
+                    <option value="Débito">Débito</option>
+                    <option value="Pix">Pix</option>
+                </select>
 
-        <label for="edit-forma-pagamento">Forma de Pagamento:</label>
-        <select id="edit-forma-pagamento" name="forma_pagamento" required>
-          <option value="Dinheiro">Dinheiro</option>
-          <option value="Crédito">Crédito</option>
-          <option value="Débito">Débito</option>
-          <option value="Pix">Pix</option>
-        </select>
-
-        <label for="edit-data-venda">Data da Venda:</label>
-        <input type="date" id="edit-data-venda" name="data_venda" required>
-        
-        <button type="submit" class="btn-salvar">Salvar Alterações</button>
-      </form>
+                <label for="edit-data-venda">Data da Venda:</label>
+                <input type="date" id="edit-data-venda" name="data_venda" required>
+                
+                <button type="submit" class="btn-salvar">Salvar Alterações</button>
+            </form>
+        </div>
     </div>
-  </div>
 {% endblock modal_content %}

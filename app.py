@@ -168,16 +168,23 @@ def excluir_venda():
 def editar_venda():
     dados = request.get_json()
     try:
+        # Capturando TODOS os dados do formulário
         id_venda = int(dados['id_venda'])
+        id_cliente = int(dados['id_cliente']) # <-- CAMPO ADICIONADO
+        id_servico = int(dados['id_servico']) # <-- CAMPO ADICIONADO
         valor = float(dados['valor'])
         forma = dados['forma_pagamento']
         data = dados['data_venda']
-        editar_vendas_no_banco(valor, forma, data, id_venda)
+    
+
+        # Passando TODOS os parâmetros para a função do banco
+        editar_vendas_no_banco(id_cliente, id_servico, valor, forma, data, id_venda)
 
         return jsonify({'success': True})
     except Exception as e:
-        print(f"Erro ao editar: {e}")
-        return jsonify({'success': False, 'message': 'Erro ao atualizar a venda'}), 500
+        # MELHORIA: Imprimir o erro real ajuda muito a debugar
+        print(f"ERRO AO EDITAR VENDA: {e}") 
+        return jsonify({'success': False, 'message': f'Erro interno ao atualizar a venda: {e}'}), 500
 
     
 if __name__ == '__main__':
