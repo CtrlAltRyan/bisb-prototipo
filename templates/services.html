@@ -22,7 +22,11 @@
         </thead>
         <tbody>
             {% for service in services %}
-            <tr>
+            <tr
+              data-id_servico="{{ service[0] }}"
+              data-nome_servico="{{ service[1] }}"  
+              data-preco="{{ service[2] }}"
+            >
                 <td><input type="checkbox" class="row-checkbox"  data-id="{{ service[0] }}" aria-label="Selecionar"></td>
                 <td>{{ service[0] }}</td> <!-- ID -->
                 <td>{{ service[1] }}</td> <!-- Nome -->
@@ -50,6 +54,23 @@
         <button type="submit" class="btn-salvar">Salvar Serviço</button>
       </form>
 
+    </div>
+</div>
+
+ <!-- Modal de Editar -->
+ <div class="modal modal-alvo" id="modal-editar-servico">
+    <div class="modal-conteudo">
+        <span class="fechar-modal">&times;</span>
+        <h2>Editar Serviço</h2>
+        <form id="editServiceForm"> 
+            <input type="hidden" name="id_servico" id="edit-id-servico">
+
+            <label for="edit-nome-servico">Nome do Serviço:</label>
+            <input type="text" id="edit-nome-servico" name="nome_servico" required> <label for="edit-valor-servico">Valor (R$):</label>
+            <input type="number" id="edit-valor-servico" name="valor" step="0.01" required> 
+            
+            <button type="submit" class="btn-salvar">Salvar Alterações</button>
+        </form>
     </div>
 </div>
 {% endblock modal_content %}

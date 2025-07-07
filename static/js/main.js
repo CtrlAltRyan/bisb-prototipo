@@ -49,26 +49,54 @@ document.addEventListener('DOMContentLoaded', function() {
         celula.textContent = dataFormatada;
     });
 
-    // --- Lógica para Controle do Modal de Adicionar ---
-    const modalAdicionar = document.querySelector(".modal-alvo");
-    const btnAdicionar = document.getElementById("btn-adicionar");
-    if (modalAdicionar && btnAdicionar) {
-        const spanFechar = modalAdicionar.querySelector(".fechar-modal");
+    // --- Lógica para Controle de Todos os Modais (Adicionar/Editar) ---
+function setupModal(modal) {
+    if (!modal) return;
 
-        btnAdicionar.onclick = () => { modalAdicionar.style.display = "flex"; };
-        if(spanFechar) spanFechar.onclick = () => { modalAdicionar.style.display = "none"; };
-        
-        window.onclick = (event) => {
-            if (event.target == modalAdicionar) {
-                modalAdicionar.style.display = "none";
-            }
-        };
-        document.addEventListener('keydown', (event) => {
-            if (event.key === 'Escape' && modalAdicionar.style.display === "flex") {
-                modalAdicionar.style.display = 'none';
-            }
-        });
+    // Fecha ao clicar no "X"
+    const closeBtn = modal.querySelector(".fechar-modal");
+    if (closeBtn) {
+        closeBtn.onclick = () => (modal.style.display = "none");
     }
+
+    // Fecha ao clicar fora do modal
+    modal.addEventListener("click", (event) => {
+        if (event.target === modal) {
+            modal.style.display = "none";
+        }
+    });
+}
+
+// Configura o modal de adicionar
+const modalAdicionar = document.querySelector(".modal-alvo");
+const btnAdicionar = document.getElementById("btn-adicionar");
+if (modalAdicionar && btnAdicionar) {
+    btnAdicionar.onclick = () => (modalAdicionar.style.display = "flex");
+    setupModal(modalAdicionar); // Aplica as regras de fechamento
+}
+
+// Configura os modais de edição (adicione todos os IDs usados)
+const modalsEditar = [
+    "#modal-editar-venda",
+    "#modal-editar-cliente",
+    "#modal-editar-servico"
+];
+modalsEditar.forEach(id => {
+    const modal = document.querySelector(id);
+    if (modal) setupModal(modal);
+});
+
+// Fecha qualquer modal aberto ao pressionar ESC
+document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+        document.querySelectorAll(".modal-alvo, #modal-editar-venda, #modal-editar-cliente, #modal-editar-servico")
+            .forEach(modal => {
+                if (modal.style.display === "flex") {
+                    modal.style.display = "none";
+                }
+            });
+    }
+});
 
     // --- Lógica para Envio de Formulários (Adicionar) ---
     const formsParaEnviar = document.querySelectorAll('.form-ajax-submit');
@@ -169,6 +197,8 @@ if (btnExcluir) {
     });
 // DENTRO DO SEU 'DOMContentLoaded' EM main.js
 
+// Este código deve estar DENTRO do seu listener principal 'DOMContentLoaded'
+
 const btnEditar = document.getElementById('btn-editar');
 if (btnEditar) {
     btnEditar.addEventListener('click', () => {
@@ -184,56 +214,65 @@ if (btnEditar) {
         const linha = checkbox.closest('tr');
         const path = window.location.pathname;
 
+        // Variáveis que serão definidas dinamicamente
         let modalId = '';
         let formId = '';
+        let urlEditar = '';
+
+        // --- Lógica para definir as variáveis baseado na página atual ---
 
         if (path.includes('/sales')) {
-            modalId = 'modal-editar-venda'; // <- Corresponde ao ID do modal no HTML
-            formId = 'editSaleForm';        // <- Corresponde ao ID do form no HTML
+            modalId = 'modal-editar-venda';
+            formId = 'editSaleForm';
+            urlEditar = '/vendas/editar';
             
-            // Preenchendo o formulário com os IDs corretos do seu HTML
+            // Preenche o formulário de vendas
             document.getElementById('edit-id-venda').value = idItem;
             document.getElementById('edit-id-cliente').value = linha.dataset.idCliente || '';
             document.getElementById('edit-id-servico').value = linha.dataset.idServico || '';
             document.getElementById('edit-valor').value = linha.dataset.valor || '';
             document.getElementById('edit-forma-pagamento').value = linha.dataset.formaPagamento || '';
-            
-            // O input type="date" precisa do formato AAAA-MM-DD
-            const dataVenda = linha.dataset.dataVenda || '';
-            document.getElementById('edit-data-venda').value = formatarParaISO(dataVenda);
+            document.getElementById('edit-data-venda').value = formatarParaISO(linha.dataset.dataVenda || '');
 
         } else if (path.includes('/customers')) {
-        modalId = 'modal-editar-cliente';  // Você precisa criar este modal no HTML
-        urlEditar = '/clientes/editar';
+            modalId = 'modal-editar-cliente'; // OK
+            formId = 'editCustomerForm';      // OK
+            urlEditar = '/clientes/editar';   // OK
 
-        // Preenche o modal de cliente
-        document.getElementById('edit-id-cliente').value = idItem;
-        document.getElementById('edit-nome-cliente').value = linha.dataset.nome || '';
-        document.getElementById('edit-email-cliente').value = linha.dataset.email || '';
-        // preencha mais campos conforme necessário
+            // Preenche o formulário usando os IDs que definimos
+            document.getElementById('edit-id-cliente').value = idItem;
+            document.getElementById('edit-nome-cliente').value = linha.dataset.nome || '';
+            document.getElementById('edit-email-cliente').value = linha.dataset.email || '';
+            document.getElementById('edit-telefone-cliente').value = linha.dataset.telefone || '';
+            document.getElementById('edit-dob-cliente').value = formatarParaISO(linha.dataset.dob || '');
+            document.getElementById('edit-bairro-cliente').value = linha.dataset.bairro || '';
 
         } else if (path.includes('/services')) {
-            modalId = 'modal-editar-servico';  // Você precisa criar este modal no HTML
+            modalId = 'modal-editar-servico';
+            formId = 'editServiceForm';        // <-- CORRIGIDO: formId definido
             urlEditar = '/servicos/editar';
 
-            // Preenche o modal de serviço
+            // Preenche o modal de serviço (usando os nomes que padronizamos)
             document.getElementById('edit-id-servico').value = idItem;
             document.getElementById('edit-nome-servico').value = linha.dataset.nome || '';
-            document.getElementById('edit-preco-servico').value = linha.dataset.preco || '';
+            document.getElementById('edit-valor-servico').value = linha.dataset.valor || ''; // <-- CORRIGIDO: 'valor' ao invés de 'preco'
+        
         } else {
             alert('Página desconhecida para editar.');
             return;
         }
         
+        // --- Lógica comum que usa as variáveis definidas acima ---
+
         const modal = document.getElementById(modalId);
         if (!modal) {
-            alert(`Erro: Modal com ID #${modalId} não encontrado.`);
+            alert(`Erro: Modal com ID #${modalId} não encontrado no HTML.`);
             return;
         }
 
         const formEditar = document.getElementById(formId);
         if (!formEditar) {
-            alert(`Erro: Formulário com ID #${formId} não encontrado.`);
+            alert(`Erro: Formulário com ID #${formId} não encontrado no modal.`);
             return;
         }
 
@@ -251,7 +290,8 @@ if (btnEditar) {
             const formData = new FormData(novoForm);
             const dadosParaEnviar = Object.fromEntries(formData.entries());
 
-            fetch('/vendas/editar', { // URL está fixa pois esta lógica só roda na pág de vendas
+            // CORRIGIDO: Usa a variável urlEditar, que muda dependendo da página
+            fetch(urlEditar, { 
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(dadosParaEnviar),
@@ -262,124 +302,17 @@ if (btnEditar) {
             })
             .then(data => {
                 if (data.success) {
-                    alert('Venda atualizada com sucesso!');
+                    alert('Item atualizado com sucesso!');
                     location.reload();
                 } else {
                     alert('Erro ao atualizar: ' + (data.message || 'Erro desconhecido.'));
                 }
             })
             .catch(err => {
-                console.error('Erro no fetch de edição:', err);
+                console.error(`Erro no fetch para ${urlEditar}:`, err);
                 alert('Ocorreu um erro na requisição de edição. Veja o console.');
             });
         });
     });
 }
 }); // Fim do listener principal 'DOMContentLoaded'
-
-document.getElementById('btn-editar').addEventListener('click', () => {
-    const selecionados = document.querySelectorAll('.row-checkbox:checked');
-
-    if (selecionados.length === 0) {
-        alert('Selecione um item para editar.');
-        return;
-    }
-    if (selecionados.length > 1) {
-        alert('Selecione apenas um item para editar.');
-        return;
-    }
-
-    const checkbox = selecionados[0];
-    const idItem = checkbox.dataset.id;
-    const linha = checkbox.closest('tr');
-    const path = window.location.pathname;
-
-    let modalId = '';
-    let urlEditar = '';
-
-    if (path.includes('/sales')) {
-        modalId = 'modal-editar';  // Seu modal de vendas
-        urlEditar = '/vendas/editar';
-
-        // Preenche o modal de venda
-        document.getElementById('edit-id-venda').value = idItem;
-        document.getElementById('edit-id-cliente').value = linha.dataset.idCliente || '';
-        document.getElementById('edit-id-servico').value = linha.dataset.idServico || '';
-        document.getElementById('edit-valor').value = linha.dataset.valor || '';
-        document.getElementById('edit-forma-pagamento').value = linha.dataset.formaPagamento || '';
-        document.getElementById('edit-data-venda').value = linha.dataset.dataVenda || '';
-
-    } else if (path.includes('/customers')) {
-        modalId = 'modal-editar-cliente';  // Você precisa criar este modal no HTML
-        urlEditar = '/clientes/editar';
-
-        // Preenche o modal de cliente
-        document.getElementById('edit-id-cliente').value = idItem;
-        document.getElementById('edit-nome-cliente').value = linha.dataset.nome || '';
-        document.getElementById('edit-email-cliente').value = linha.dataset.email || '';
-        // preencha mais campos conforme necessário
-
-    } else if (path.includes('/services')) {
-        modalId = 'modal-editar-servico';  // Você precisa criar este modal no HTML
-        urlEditar = '/servicos/editar';
-
-        // Preenche o modal de serviço
-        document.getElementById('edit-id-servico').value = idItem;
-        document.getElementById('edit-nome-servico').value = linha.dataset.nome || '';
-        document.getElementById('edit-preco-servico').value = linha.dataset.preco || '';
-        // preencha mais campos conforme necessário
-
-    } else {
-        alert('Página desconhecida para editar.');
-        return;
-    }
-
-    // Exibe o modal correto
-    const modal = document.getElementById(modalId);
-    if (!modal) {
-        alert('Modal para edição não encontrado no HTML.');
-        return;
-    }
-    modal.style.display = 'flex';
-
-    // Captura o formulário dentro do modal
-    const formEditar = modal.querySelector('form');
-
-    if (!formEditar) {
-        alert('Formulário de edição não encontrado no modal.');
-        return;
-    }
-
-    // Remove event listeners antigos para evitar múltiplos disparos
-    formEditar.replaceWith(formEditar.cloneNode(true));
-    const novoFormEditar = modal.querySelector('form');
-
-    novoFormEditar.addEventListener('submit', (e) => {
-        e.preventDefault();
-
-        const formData = new FormData(novoFormEditar);
-        const dadosParaEnviar = Object.fromEntries(formData.entries());
-
-        fetch(urlEditar, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(dadosParaEnviar),
-        })
-        .then(res => {
-            if (!res.ok) throw new Error(`Erro: ${res.status}`);
-            return res.json();
-        })
-        .then(data => {
-            if (data.success) {
-                alert('Item atualizado com sucesso!');
-                location.reload();
-            } else {
-                alert('Erro: ' + data.message);
-            }
-        })
-        .catch(err => {
-            console.error('Erro ao editar:', err);
-            alert('Erro ao editar, veja o console.');
-        });
-    });
-});

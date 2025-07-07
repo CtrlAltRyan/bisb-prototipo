@@ -137,3 +137,36 @@ def editar_vendas_no_banco(id_cliente, id_servico, valor, forma, data, id_venda)
     finally:
         cur.close()
         conn.close()
+
+def editar_servico_no_banco(id_servico, nome_servico, preco):
+    conn = get_db_connection()
+    try:
+        cur = conn.cursor()
+        cur.execute("""
+            UPDATE salao.servicos
+            SET nome_servico = %s, 
+                preco = %s
+            WHERE id = %s
+        """, (nome_servico, preco, id_servico))
+        conn.commit()
+    finally:
+        cur.close()
+        conn.close()
+
+def editar_cliente_no_banco(id_cliente, nome, telefone, email, dob, bairro):
+    conn = get_db_connection()
+    try:
+        cur = conn.cursor()
+        cur.execute("""
+            UPDATE salao.clientes
+            SET nome = %s, 
+                telefone = %s, 
+                email = %s, 
+                data_nascimento = %s, 
+                bairro = %s
+            WHERE id = %s
+        """, (nome, telefone, email, dob, bairro, id_cliente))
+        conn.commit()
+    finally:
+        cur.close()
+        conn.close()

@@ -11,7 +11,8 @@ def customers_page():
 
     cur.execute("""
         SELECT *
-        FROM salao.clientes;
+        FROM salao.clientes
+        ORDER BY id ASC;
     """)
     clientes = cur.fetchall()
 
@@ -35,7 +36,8 @@ def services_page():
 
     cur.execute("""
         SELECT *
-        FROM salao.servicos;
+        FROM salao.servicos
+        ORDER BY id ASC;
     """)
     services = cur.fetchall()
 

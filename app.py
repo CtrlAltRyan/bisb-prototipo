@@ -185,7 +185,47 @@ def editar_venda():
         # MELHORIA: Imprimir o erro real ajuda muito a debugar
         print(f"ERRO AO EDITAR VENDA: {e}") 
         return jsonify({'success': False, 'message': f'Erro interno ao atualizar a venda: {e}'}), 500
+    
 
+@app.route('/clientes/editar', methods=['POST'])
+def editar_cliente():
+    dados = request.get_json()
+    try:
+        # Capturando TODOS os dados do formulário
+        id_cliente = int(dados['id_cliente'])
+        nome = dados['nome']
+        telefone = dados['telefone']
+        email = dados['email']
+        dob = dados['dob']
+        bairro = dados['bairro']
+
+        # Passando TODOS os parâmetros para a função do banco
+        editar_cliente_no_banco(id_cliente, nome, telefone, email, dob, bairro)
+
+        return jsonify({'success': True})
+    except Exception as e:
+        # MELHORIA: Imprimir o erro real ajuda muito a debugar
+        print(f"ERRO AO EDITAR CLIENTE: {e}") 
+        return jsonify({'success': False, 'message': f'Erro interno ao atualizar o cliente: {e}'}), 500
+
+@app.route('/servicos/editar', methods=['POST'])
+def editar_servico():
+    dados = request.get_json()
+    try:
+        # Capturando TODOS os dados do formulário
+        id_servico = int(dados['id_servico'])
+        preco = float(dados['valor'])
+        nome_servico = dados['nome_servico']
+
+        # Passando TODOS os parâmetros para a função do banco
+        editar_servico_no_banco(id_servico, nome_servico, preco)
+
+        return jsonify({'success': True})
+    except Exception as e:
+        # MELHORIA: Imprimir o erro real ajuda muito a debugar
+        print(f"ERRO AO EDITAR SERVIÇO: {e}") 
+        traceback.print_exc()
+        return jsonify({'success': False, 'message': f'Erro interno ao atualizar o serviço: {e}'}), 500
     
 if __name__ == '__main__':
     app.run(debug=True)
