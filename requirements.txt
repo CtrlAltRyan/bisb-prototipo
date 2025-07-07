@@ -4,3 +4,4 @@ flask-login
 bcrypt
 pandas
 plotly
+dotenv
