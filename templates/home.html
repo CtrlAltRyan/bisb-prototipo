@@ -8,7 +8,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-
+     <link rel="icon" href="{{ url_for('static', filename='images/logo_browser.png') }}" type="image/x-icon">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 </head>
 <body>
 
@@ -100,6 +101,21 @@
             </section>
 
             <section class="charts-section">
+                <div id="sales-chart">
+                    <script>
+                        // Faz uma requisição para a API
+                        fetch('/dashboard/api/sales-chart')
+                            .then(response => response.json())
+                            .then(data => {
+                                console.log('Dados recebidos:', data); // Inspecione os dados no console
+                                const chartData = JSON.parse(data);
+                                console.log('Dados do gráfico:', chartData.data);
+                                console.log('Layout do gráfico:', chartData.layout);
+                                Plotly.newPlot('sales-chart', chartData.data, chartData.layout);
+                            })
+                            .catch(error => console.error('Erro ao carregar o gráfico:', error));
+                    </script>
+                </div>
                 <div class="chart-container">
                     <h2 class="chart-container__title">Fluxo de caixa</h2>
                     <img src="caminho/para/grafico-fluxo-de-caixa.png" alt="Gráfico de colunas mostrando o fluxo de caixa" class="chart-container__image">
