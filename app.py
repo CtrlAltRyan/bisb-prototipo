@@ -153,6 +153,8 @@ def excluir_venda():
     except Exception as e:
         print(f"Erro ao excluir no banco de dados: {e}")
         return jsonify({'success': False, 'message': 'Erro interno no servidor.'}), 500
-    
+
+
+
 if __name__ == '__main__':
     app.run(debug=True)
