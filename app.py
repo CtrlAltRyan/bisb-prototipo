@@ -170,10 +170,10 @@ def excluir_venda():
 def editar_venda():
     dados = request.get_json()
     try:
-        # Capturando TODOS os dados do formulário
+        # Capturando os dados do formulário
         id_venda = int(dados['id_venda'])
-        id_cliente = int(dados['id_cliente']) # <-- CAMPO ADICIONADO
-        id_servico = int(dados['id_servico']) # <-- CAMPO ADICIONADO
+        id_cliente = int(dados['id_cliente']) 
+        id_servico = int(dados['id_servico']) 
         valor = float(dados['valor'])
         forma = dados['forma_pagamento']
         data = dados['data_venda']

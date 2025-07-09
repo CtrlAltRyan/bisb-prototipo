@@ -48,12 +48,12 @@
                             <span>Cadastrar Usuário</span>
                     {% else %}
                     <li class="sidebar__item">
-                        <a class="sidebar__link" href="mailto:lassance@ufc.br">
+                        <a class="sidebar__link" href="mailto:lassance@ufc.br?subject=Ajuda&body=Olá, preciso de suporte.">
                             <img src="{{ url_for('static', filename='images/support_icon.png') }}" alt="" class="sidebarsupport__icon">
                             <span>Suporte</span>
-                    {% endif %}
                         </a>
                     </li>
+                    {% endif %}
                 </ul>
             </nav>
 
@@ -94,8 +94,8 @@
                 </div>
                 <div class="card card--clients">
                     <h3 class="card__title">Vendas <small>no mês atual</small></h3>
-                    <p class="card__value">{{clientesnum}}
-                        <img src="{{ url_for('static', filename='images/Arrow 1.svg') }}"alt="Ícone de Seta para Cima">
+                    <p class="card__value"> R$ {{salesChange}}
+                        <!-- img src="{{ url_for('static', filename='images/Arrow 1.svg') }}"alt="Ícone de Seta para Cima" -->
                     </p>
                 </div>
                 <div class="card card--active-clients">
@@ -129,7 +129,7 @@
 
                 <div class="chart-container">
                     <h2 class="chart-container__title">Bairros em alta 🔥</h2>
-                    <img src="caminho/para/grafico-fluxo-de-caixa.png" alt="Gráfico de colunas mostrando o fluxo de caixa" class="chart-container__image">
+                    <img src="caminho/para/grafico-fluxo-de-caixa.png" alt="Mapa de calor para clientes" class="chart-container__image">
                 </div>
             </section>
 
