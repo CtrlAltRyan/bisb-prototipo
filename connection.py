@@ -8,6 +8,6 @@ def get_db_connection():
     return psycopg2.connect(
         dbname="bisbdb",
         user="postgres",
-        password="ryanboy2",
+        password="senha",
         host="localhost"
     )

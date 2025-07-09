@@ -57,6 +57,21 @@ def get_customersnum():
 
     return clientesnum
 
+def get_customerschange():
+    conn = get_db_connection()
+    cur = conn.cursor()
+
+    cur.execute("""
+         SELECT COUNT(nome) FROM salao.clientes;
+    """)
+    clientesChange = cur.fetchone()
+    clientesChange = clientesChange[0] if clientesChange else "0"
+
+    cur.close()
+    conn.close()
+
+    return clientesChange
+
 def adm_check():
     conn = get_db_connection()
     cur = conn.cursor()
@@ -68,3 +83,6 @@ def adm_check():
     cur.close()
 
     return permission[0] if permission else False
+
+def get_pfp():
+    pfp = session['user']

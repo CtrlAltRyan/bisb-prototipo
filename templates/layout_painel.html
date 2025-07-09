@@ -80,20 +80,20 @@
                         </button>
                     </div>
                     <div class="user-profile">
-                        <button class="user-profile__button" aria-label="Opções do Usuário">
+                        <button class="user-profile__button" aria-label="Opções do Usuário">    
                             <img src="{{ url_for('static', filename='images/default_pfp.png') }}" alt="Avatar do Usuário" class="user-profile__avatar">
                             <img src="{{ url_for('static', filename='images/optionspfp_icon.png') }}" alt="Abrir menu" class="user-profile__dropdown-icon">
                         </button>
                     </div>
                 </div>
             </header>
-
+       
             <section class="table-actions">
+                {% if permission %}
                 <button class="action-button action-button--add" id="btn-adicionar">
                     <img src="{{ url_for('static', filename='images/add_icon.png') }}" alt="">
                     <span>Adicionar</span>
                 </button>
-                {% if permission %}
                 <button class="action-button action-button--delete" id="btn-excluir">
                     <img src="{{ url_for('static', filename='images/delete_icon.png') }}" alt="">
                     <span>Excluir</span>
@@ -101,6 +101,11 @@
                 <button class="action-button action-button--edit" id="btn-editar">
                     <img src="{{ url_for('static', filename='images/edit_icon.png') }}" alt="">
                     <span>Editar</span>
+                </button>
+                {% elif path == '/user/sales' %}
+                <button class="action-button action-button--add" id="btn-adicionar">
+                    <img src="{{ url_for('static', filename='images/add_icon.png') }}" alt="">
+                    <span>Adicionar</span>
                 </button>
                 {% endif %}
             </section>

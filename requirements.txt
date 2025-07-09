@@ -5,3 +5,4 @@ bcrypt
 pandas
 plotly
 dotenv
+folium

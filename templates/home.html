@@ -41,10 +41,17 @@
                             <span>Vendas</span>
                         </a>
                     </li>
+                    {% if permission %}
                     <li class="sidebar__item">
-                        <a class="sidebar__link">
+                        <a class="sidebar__link"  href="{{ url_for('auth.register_page') }}">
+                            <img src="{{ url_for('static', filename='images/support_icon.png') }}" alt="" class="sidebarsupport__icon" >
+                            <span>Cadastrar Usuário</span>
+                    {% else %}
+                    <li class="sidebar__item">
+                        <a class="sidebar__link" href="mailto:lassance@ufc.br">
                             <img src="{{ url_for('static', filename='images/support_icon.png') }}" alt="" class="sidebarsupport__icon">
                             <span>Suporte</span>
+                    {% endif %}
                         </a>
                     </li>
                 </ul>
@@ -82,17 +89,18 @@
 
             <section class="info-cards">
                 <div class="card card--sales">
-                    <h3 class="card__title">Vendas Mensais</h3>
+                    <h3 class="card__title">Vendas totais</h3>
                     <p class="card__value">R$ {{montante}}</p>
                 </div>
                 <div class="card card--clients">
-                    <h3 class="card__title">Clientes Atuais</h3>
-                    <p class="card__value">{{clientesnum}}</p>
+                    <h3 class="card__title">Vendas <small>no mês atual</small></h3>
+                    <p class="card__value">{{clientesnum}}
+                        <img src="{{ url_for('static', filename='images/Arrow 1.svg') }}"alt="Ícone de Seta para Cima">
+                    </p>
                 </div>
                 <div class="card card--active-clients">
-                    <h3 class="card__title">Clientes Ativos <small>no mês atual</small></h3>
+                    <h3 class="card__title">Clientes Atuais</h3>
                     <p class="card__value"> {{clientesnum}}
-                        <img src="{{ url_for('static', filename='images/Arrow 1.svg') }}"alt="Ícone de Seta para Cima">
                     </p>
                 </div>
                 <div class="card card--most-sold">
@@ -102,20 +110,26 @@
             </section>
             
             <section class="charts-section">
+                
                 <div class="chart-container">
-                    <h2 class="chart-container__title">Top 5 Bairros por Número de Clientes</h2>
+                    <h2 class="chart-container__title">Vendas por serviço</h2>
+                    <img src="caminho/para/grafico-vendas-por-servico.png" alt="Gráfico de rosca mostrando a distribuição de vendas por serviço" class="chart-container__image">
+                </div>
+                <div class="chart-container">
+                    <h2 class="chart-container__title">Fluxo de caixa</h2>
+                    <img src="caminho/para/grafico-fluxo-de-caixa.png" alt="Gráfico de colunas mostrando o fluxo de caixa" class="chart-container__image">
+                </div>
+
+                <div class="chart-container">
+                    <h2 class="chart-container__title">Panorama de Clientes</h2>
                     <div style="position: relative; height: 300px; width: 100%;">
                         <canvas id="bairrosChart"></canvas>
                     </div>
                 </div>
 
                 <div class="chart-container">
-                    <h2 class="chart-container__title">Fluxo de caixa</h2>
+                    <h2 class="chart-container__title">Bairros em alta 🔥</h2>
                     <img src="caminho/para/grafico-fluxo-de-caixa.png" alt="Gráfico de colunas mostrando o fluxo de caixa" class="chart-container__image">
-                </div>
-                <div class="chart-container">
-                    <h2 class="chart-container__title">Vendas por serviço</h2>
-                    <img src="caminho/para/grafico-vendas-por-servico.png" alt="Gráfico de rosca mostrando a distribuição de vendas por serviço" class="chart-container__image">
                 </div>
             </section>
 

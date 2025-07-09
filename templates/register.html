@@ -45,10 +45,7 @@
                 {% endwith %}
                 
                 <form method="POST" action="{{ url_for('auth.register_page') }}" id="resetForm">
-                    <div class="reset-form-group">
-                        <input type="text" name="name" class="reset-form-input" placeholder="nome" required>
-                    </div>
-                    
+
                     <div class="reset-form-group">
                         <input type="text" name="user" class="reset-form-input" placeholder="usuário" required>
                     </div>
@@ -57,6 +54,13 @@
                         <input type="password" name="password" class="reset-form-input" placeholder="senha" required>
                     </div>
                     
+                    <div class="reset-form-group" style="margin-top: 10px;">
+                    <label style="font-size: 14px;">
+                        <input type="checkbox" name="permission">
+                        Criar com permissão de administrador <a href="#" target="_blank"></a>
+                    </label>
+                    </div>
+
                     <button type="submit" class="reset-submit-btn">CADASTRAR</button>
                 </form>
             </div>
