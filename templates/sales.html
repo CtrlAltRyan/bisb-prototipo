@@ -10,6 +10,7 @@
 {% endblock %}
 
 {% block table_content %}
+{% if permission %}
     <table class="client-table">
         <thead>
             <tr>
@@ -41,6 +42,35 @@
             {% endfor %}
         </tbody>
     </table>
+{% else %}
+     <table class="client-table">
+        <thead>
+            <tr>
+                <th></th>
+                <th>ID Cliente</th>
+                <th>ID Serviço</th>
+                <th>Valor</th>
+                <th>Forma de Pagamento</th>
+                <th>Data</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for venda in sales %}
+                <td></td>
+                <td class="popover-trigger" data-popover="Cliente: {{ venda[6] }}">{{ venda[1] }}</td>
+                <td class="popover-trigger" data-popover="Serviço: {{ venda[7] }}">{{ venda[2] }}</td>
+                <td>R$ {{ venda[3] }}</td>
+                <td>{{ venda[4] }}</td>
+                <td class="data-a-formatar">{{ venda[5] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endif %}
+{% endblock table_content %}
+
+{% block page_actions %}
+
 
 {% endblock %}
 

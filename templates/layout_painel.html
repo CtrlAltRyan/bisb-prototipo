@@ -93,6 +93,7 @@
                     <img src="{{ url_for('static', filename='images/add_icon.png') }}" alt="">
                     <span>Adicionar</span>
                 </button>
+                {% if permission %}
                 <button class="action-button action-button--delete" id="btn-excluir">
                     <img src="{{ url_for('static', filename='images/delete_icon.png') }}" alt="">
                     <span>Excluir</span>
@@ -101,6 +102,7 @@
                     <img src="{{ url_for('static', filename='images/edit_icon.png') }}" alt="">
                     <span>Editar</span>
                 </button>
+                {% endif %}
             </section>
 
         

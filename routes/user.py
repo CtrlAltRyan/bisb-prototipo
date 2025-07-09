@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, session, redirect, url_for, flash
 from .info import get_topservice, get_amount, get_customersnum
 from connection import get_db_connection
+from .info import adm_check
 
 user_bp = Blueprint('user', __name__, template_folder='templates')
 
@@ -18,8 +19,8 @@ def customers_page():
 
     cur.close()
     conn.close()
-
-    return render_template('customers.html', clientes=clientes)
+    permission = adm_check()
+    return render_template('customers.html', clientes=clientes, permission=permission)
 
 @user_bp.route('/home')
 def home_page():
@@ -43,8 +44,8 @@ def services_page():
 
     cur.close()
     conn.close()
-
-    return render_template('services.html', services=services)
+    permission = adm_check()
+    return render_template('services.html', services=services, permission=permission)
 
 @user_bp.route('/sales')
 def sales_page():
@@ -71,8 +72,8 @@ def sales_page():
 
     cur.close()
     conn.close()
-
-    return render_template('sales.html', sales=sales)
+    permission = adm_check()
+    return render_template('sales.html', sales=sales, permission=permission)
 
 @user_bp.before_request
 def check_authentication():

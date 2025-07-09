@@ -14,6 +14,7 @@
 
 <!-- 4. Preenche o bloco com a tabela de clientes -->
 {% block table_content %}
+{% if permission %}
     <table class="client-table">
         <thead>
             <tr>
@@ -47,9 +48,38 @@
             {% endfor %}
         </tbody>
     </table>
+{% else %}
+ <table class="client-table">
+        <thead>
+            <tr>
+                <th></th>
+                <th>ID</th>
+                <th>Nome do Cliente</th>
+                <th>Telefone</th>
+                <th>Email</th>
+                <th>DOB</th>
+                <th>Bairro</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for cliente in clientes %}
+            <tr>
+                <td></td>
+                <td>{{ cliente[0] }}</td>
+                <td>{{ cliente[1] }}</td> <!-- Nome -->
+                <td>{{ cliente[2] }}</td> <!-- Email -->
+                <td>{{ cliente[3] }}</td> <!-- Telefone -->
+                <td class="data-a-formatar">{{ cliente[4] }}</td> <!-- DOB -->
+                <td>{{ cliente[5] }}</td> <!-- Bairro -->
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endif %}
 {% endblock %}
 
 {% block modal_content %}
+
   <div class="modal modal-alvo">
     <div class="modal-conteudo">
       <span class="fechar-modal">&times;</span>

@@ -1,4 +1,5 @@
 from connection import get_db_connection
+from flask import session
 
 def get_topservice():
     conn = get_db_connection()
@@ -55,3 +56,15 @@ def get_customersnum():
     conn.close()
 
     return clientesnum
+
+def adm_check():
+    conn = get_db_connection()
+    cur = conn.cursor()
+    cur.execute("""
+        SELECT is_adm FROM salao.usuarios WHERE usuario = (%s);
+    """,(session['user'],))
+
+    permission = cur.fetchone()
+    cur.close()
+
+    return permission[0] if permission else False
