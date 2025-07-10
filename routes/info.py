@@ -1,5 +1,6 @@
 from connection import get_db_connection
 from flask import session
+import pandas as pd
 
 def get_topservice():
     conn = get_db_connection()
@@ -86,3 +87,18 @@ def adm_check():
     conn.close()
 
     return permission[0] if permission else False
+
+def get_vendas_por_bairro():
+    conn = get_db_connection()
+    cur = conn.cursor()
+    cur.execute("""
+    SELECT c.bairro, COUNT(*) AS n_vendas
+    FROM salao.vendas AS v
+    JOIN salao.clientes AS c ON v.id_cliente = c.id
+    GROUP BY c.bairro
+    ORDER BY n_vendas DESC;
+    """)
+    rows = cur.fetchall()
+    cur.close()
+    conn.close()
+    return pd.DataFrame(rows, columns=['bairro', 'n_vendas'])
