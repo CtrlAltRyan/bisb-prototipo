@@ -363,7 +363,7 @@ fetch('/dashboard/api/vendasservico')  // grafico
                     }
                 },
                 title: {
-                    display: true,
+                    display: false,
                     text: 'Top 5 Serviços Vendidos',
                     font: {
                         size: 18 // AQUI você altera o tamanho do título do gráfico
@@ -380,13 +380,14 @@ fetch('/dashboard/api/vendasservico')  // grafico
         display: false 
       },
                     title: {
-                        display: true,
+                        display: false,
                         text: 'Serviços',
                         font: {
                             size: 14 // Tamanho do texto no eixo X
                         }
                     },
                     ticks: {
+                        display: false,
                         font: {
                             size: 12 // Tamanho dos rótulos das categorias
                         }
@@ -398,13 +399,14 @@ fetch('/dashboard/api/vendasservico')  // grafico
       },
                     beginAtZero: true,
                     title: {
-                        display: true,
+                        display: false,
                         text: 'Quantidade de Vendas',
                         font: {
                             size: 14 // Tamanho do texto do eixo Y
                         }
                     },
                     ticks: {
+                        display: false,
                         font: {
                             size: 12 // Tamanho dos valores numéricos no eixo Y
                         }
@@ -436,7 +438,7 @@ fetch('/dashboard/api/vendasmes')  // grafico
             labels: labels,
             datasets: [{
                 label: 'Vendas por Mês',
-                data: qtdVendas,
+                data: valores,
                 backgroundColor: 'rgba(75, 192, 192, 0.7)', // Cor das barras
                 borderColor: 'rgba(75, 192, 192, 1)',       // Cor da borda
                 borderWidth: 1,                             // Espessura da borda
@@ -463,7 +465,7 @@ fetch('/dashboard/api/vendasmes')  // grafico
                     }
                 },
                 title: {
-                    display: true,
+                    display: false,
                     text: 'Vendas por Mês',
                     font: {
                         size: 18 // AQUI você altera o tamanho do título do gráfico
@@ -472,6 +474,7 @@ fetch('/dashboard/api/vendasmes')  // grafico
                 legend: {
                     display: false // Você pode colocar true se quiser mostrar a legenda
                 }
+                
             },
             scales: {
                 x: {
@@ -480,7 +483,9 @@ fetch('/dashboard/api/vendasmes')  // grafico
                         text: 'Mês',
                         font: {
                             size: 14 // Tamanho do texto no eixo X
-                        }
+                        },grid: {
+              display: false
+            },
                     },
                     ticks: {
                         font: {
@@ -495,13 +500,17 @@ fetch('/dashboard/api/vendasmes')  // grafico
                         text: 'Quantidade de Vendas',
                         font: {
                             size: 14 // Tamanho do texto do eixo Y
-                        }
+                        },
+              display: false
+            
                     },
                     ticks: {
                         font: {
                             size: 12 // Tamanho dos valores numéricos no eixo Y
                         }
-                    }
+                    },grid: {
+              display: false
+            },
                 }
             }
         }
@@ -512,9 +521,9 @@ fetch('/dashboard/api/vendasmes')  // grafico
 });
 
 
-fetch('/dashboard/api/topClientes')  // grafico
-.then(response => response.json())
-.then(data => {
+fetch('/dashboard/api/topClientes')
+  .then(response => response.json())
+  .then(data => {
     const labels = data.top_clientes.labels;
     const servicos = data.top_clientes.data;
 
@@ -524,85 +533,198 @@ fetch('/dashboard/api/topClientes')  // grafico
     const ctx = document.getElementById('graficoTopClientes').getContext('2d');
 
     new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: labels,
-            datasets: [{
-                label: 'Clientes',
-                data: qtdVendas,
-                backgroundColor: 'rgba(75, 192, 192, 0.7)', // Cor das barras
-                borderColor: 'rgba(75, 192, 192, 1)',       // Cor da borda
-                borderWidth: 1,                             // Espessura da borda
-                borderRadius: 5                             // Arredondamento das barras
-            }]
-        },
-        options: {
-            responsive: true, // Ajusta ao tamanho do container, mas respeita o width/height do <canvas> se fixado
-            plugins: {
-                tooltip: {
-                    callbacks: {
-                        label: function(context) {
-                            const index = context.dataIndex;
-                            const qtd = qtdVendas[index];
-                            const valor = valores[index];
-                            return [
-                                `Vendas: ${qtd}`,
-                                `Valor total: R$ ${valor.toLocaleString('pt-BR', {
-                                    minimumFractionDigits: 2,
-                                    maximumFractionDigits: 2
-                                })}`
-                            ];
-                        }
-                    }
-                },
-                title: {
-                    display: true,
-                    text: 'Vendas por Mês',
-                    font: {
-                        size: 18 // AQUI você altera o tamanho do título do gráfico
-                    }
-                },
-                legend: {
-                    display: false // Você pode colocar true se quiser mostrar a legenda
-                }
-            },
-            scales: {
-                x: {
-                    title: {
-                        display: true,
-                        text: 'Mês',
-                        font: {
-                            size: 14 // Tamanho do texto no eixo X
-                        }
-                    },
-                    ticks: {
-                        font: {
-                            size: 12 // Tamanho dos rótulos das categorias
-                        }
-                    }
-                },
-                y: {
-                    beginAtZero: true,
-                    title: {
-                        display: true,
-                        text: 'Quantidade de Vendas',
-                        font: {
-                            size: 14 // Tamanho do texto do eixo Y
-                        }
-                    },
-                    ticks: {
-                        font: {
-                            size: 12 // Tamanho dos valores numéricos no eixo Y
-                        }
-                    }
-                }
+      type: 'bar',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: 'Clientes',
+          data: qtdVendas,
+          backgroundColor: 'rgba(75, 192, 192, 0.7)',
+          borderColor: 'rgba(75, 192, 192, 1)',
+          borderWidth: 0.5,
+          borderRadius: 0 // barras retas, como um histograma
+        }]
+      },
+      options: {
+        responsive: false,
+        plugins: {
+          tooltip: {
+            callbacks: {
+              label: function(context) {
+                const index = context.dataIndex;
+                const qtd = qtdVendas[index];
+                const valor = valores[index];
+                return [
+                  `Vendas: ${qtd}`,
+                  `Valor total: R$ ${valor.toLocaleString('pt-BR', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                  })}`
+                ];
+              }
             }
+          },
+          title: {
+            display: true,
+            text: 'Melhores Clientes',
+            font: {
+              size: 18
+            }
+          },
+          legend: {
+            display: false
+          }
+        },
+        scales: {
+          x: {
+            title: {
+              display: false,
+              text: 'Mês',
+              font: {
+                size: 14
+              }
+            },
+            ticks: {
+              font: {
+                size: 12
+              }
+            },
+            grid: {
+              display: false
+            },
+            categoryPercentage: 0, // ocupa 100% do espaço disponível
+            barPercentage: 0     // barra ocupa 100% do grupo
+          },
+          y: {
+            beginAtZero: true,
+            title: {
+              display: false,
+              text: 'Quantidade de Vendas',
+              font: {
+                size: 14
+              }
+            },
+            ticks: {
+              font: {
+                size: 12
+              }, 
+              
+            },
+            grid: {
+              display: false
+            }
+          }
         }
+      }
     });
-})
-.catch(error => {
+  })
+  .catch(error => {
     console.error('Erro ao carregar os dados dos gráficos:', error);
-});
+  });
+
+
+fetch('/dashboard/api/botClientes')  // gráfico
+  .then(response => response.json())
+  .then(data => {
+    const labels = data.bot_clientes.labels;
+    const servicos = data.bot_clientes.data;
+
+    const qtdVendas = servicos.map(item => item.qtd);
+    const valores = servicos.map(item => parseFloat(item.valor));
+
+    const ctx = document.getElementById('graficobotClientes').getContext('2d');
+
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: 'Clientes',
+          data: qtdVendas,
+          backgroundColor: 'rgba(75, 192, 192, 0.7)',
+          borderColor: 'rgba(75, 192, 192, 1)',
+          borderWidth: 1,
+          borderRadius: 0 // barras coladas retas
+        }]
+      },
+      options: {
+        responsive: false,
+        plugins: {
+          tooltip: {
+            callbacks: {
+              label: function(context) {
+                const index = context.dataIndex;
+                const qtd = qtdVendas[index];
+                const valor = valores[index];
+                return [
+                  `Vendas: ${qtd}`,
+                  `Valor total: R$ ${valor.toLocaleString('pt-BR', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                  })}`
+                ];
+              }
+            }
+          },
+          title: {
+            display: true,
+            text: 'Piores Clientes',
+            font: {
+              size: 18
+            }
+          },
+          legend: {
+            display: false
+          }
+        },
+        scales: {
+          x: {
+            title: {
+              display: false,
+              text: 'Mês',
+              font: {
+                size: 14
+              }
+            },
+            ticks: {
+              font: {
+                size: 12
+              }
+            },
+            grid: {
+              display: false
+            },
+            categoryPercentage: 1.0,
+            barPercentage: 1.0
+          },
+          y: {
+            beginAtZero: true,
+            title: {
+              display: false,
+              text: 'Quantidade de Vendas',
+              font: {
+                size: 14
+              }
+            },
+            ticks: {
+              font: {
+                size: 12
+              }
+            },
+            grid: {
+              display: false
+            }
+          }
+        }
+      }
+    });
+  })
+  .catch(error => {
+    console.error('Erro ao carregar os dados dos gráficos:', error);
+  });
+
+
+
 
 
 

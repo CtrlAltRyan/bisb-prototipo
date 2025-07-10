@@ -25,7 +25,9 @@
         
         <aside class="sidebar">
             <div class="sidebar__logo">
+                <a href="{{ url_for('user.home_page')}}">
                 <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo BISB Consultoria">
+                </a>
             </div>
 
             <nav class="sidebar__navigation">
@@ -61,7 +63,6 @@
                         </a>
                     {% endif %} 
                     </li>
-                    {% endif %}
                 </ul>
             </nav>
 
@@ -98,7 +99,7 @@
             <section class="info-cards">
                 <div class="card card--sales">
                     <h3 class="card__title">Vendas totais</h3>
-                    <p class="card__value">R$ {{montante}}</p>
+                    <p class="card__value">R$ {{montante}} </p>
                 </div>
                 <div class="card card--clients">
                     <h3 class="card__title">Vendas <small>no mês atual</small></h3>
@@ -117,17 +118,23 @@
             <section class="charts-section">
                 
                 <div class="chart-container">
-                    <h2 class="chart-container__title">Fluxo de caixa</h2>
+                    <h2 class="chart-container__title">Vendas por Mês</h2>
+                    &nbsp;
                     <canvas id="graficoVendasPorMes"></canvas>
                 </div>
                 <div class="chart-container">
-                    <h2 class="chart-container__title">Vendas por serviço</h2>
+                    <h2 class="chart-container__title">Serviços mais Vendidos</h2>
+                    &nbsp;
                     <canvas id="graficoVendasPorServico"></canvas>
                 </div>
 
-                <div class="chart-container">
+                <div class="chart-container"> 
                     <h2 class="chart-container__title">Panorama de Clientes</h2>
-                    <canvas id="graficoTopClientes"></canvas>
+                    &nbsp;
+                   
+                        <canvas id="graficoTopClientes"></canvas>
+                        <canvas id="graficobotClientes"></canvas>
+                     
                 </div>
 
                 <div class="chart-container">
