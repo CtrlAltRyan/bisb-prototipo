@@ -1,6 +1,7 @@
 from connection import get_db_connection
 from flask import session
 import pandas as pd
+import logging
 
 def get_topservice():
     conn = get_db_connection()
@@ -102,3 +103,4 @@ def get_vendas_por_bairro():
     cur.close()
     conn.close()
     return pd.DataFrame(rows, columns=['bairro', 'n_vendas'])
+

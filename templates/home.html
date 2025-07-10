@@ -11,15 +11,13 @@
     <link rel="icon" href="{{ url_for('static', filename='images/logo_browser.png') }}" type="image/x-icon">
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="https://unpkg.com/leaflet.heat/dist/leaflet-heat.js"></script>
+
     <link
-  rel="stylesheet"
-  href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-  integrity="sha256-o9N1j5yChsApsXdPugS1UBFKfihf0sAcV5Bq+1G5pJE="
-  crossorigin=""
-/>
+    href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css"
+    rel="stylesheet"
+    />
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
+
 </head>
 <body>
 
@@ -103,14 +101,11 @@
                 </div>
                 <div class="card card--clients">
                     <h3 class="card__title">Vendas <small>no mês atual</small></h3>
-                    <p class="card__value"> R$ {{salesChange}}
-                        <!-- img src="{{ url_for('static', filename='images/Arrow 1.svg') }}"alt="Ícone de Seta para Cima" -->
-                    </p>
+                    <p class="card__value"> R$ {{salesChange}}</p>
                 </div>
                 <div class="card card--active-clients">
                     <h3 class="card__title">Clientes Atuais</h3>
-                    <p class="card__value"> {{clientesnum}}
-                    </p>
+                    <p class="card__value"> {{clientesnum}}</p>
                 </div>
                 <div class="card card--most-sold">
                     <h3 class="card__title">Serviço mais vendido <small>no mês atual</small></h3>
@@ -122,80 +117,77 @@
                 
                 <div class="chart-container">
                     <h2 class="chart-container__title">Fluxo de caixa</h2>
-                    <canvas id="graficoVendasPorMes" > ></canvas>
+                    <canvas id="graficoVendasPorMes"></canvas>
                 </div>
                 <div class="chart-container">
-                    <h2 class="chart-container__title">Vendas por serviço </h2>
-                    <canvas id="graficoVendasPorServico" > ></canvas>
+                    <h2 class="chart-container__title">Vendas por serviço</h2>
+                    <canvas id="graficoVendasPorServico"></canvas>
                 </div>
 
                 <div class="chart-container">
                     <h2 class="chart-container__title">Panorama de Clientes</h2>
-                    
-                    <canvas id="graficoTopClientes"> ></canvas>
-                
+                    <canvas id="graficoTopClientes"></canvas>
                 </div>
 
                 <div class="chart-container">
                     <h2 class="chart-container__title">Bairros em alta 🔥</h2>
-                    <div id="map" style="width: 100%; height: 400px;"></div>
+                    <div id="map" style="width:100%; height:400px;"></div>
                 </div>
             </section>
 
         </main>
     </div>
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-    // Cria o mapa centrado em Fortaleza
-    const map = L.map('map').setView([-3.7306, -38.5215], 12); // centro de Fortaleza
 
-    // Escolha da aparência do mapa base — aqui você pode mudar
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-        attribution: '© OpenStreetMap',
-        maxZoom: 18,
-    }).addTo(map);
+    <script>
+  // 1. Configure seu token Mapbox (crie em https://www.mapbox.com/)
+  mapboxgl.accessToken = 'pk.eyJ1Ijoicnlhbm1vdXNlIiwiYSI6ImNtY3hyeHFsNTBoMXMyanB1eDF5bzcxNW0ifQ.J8rzus6gRtGJz_kW--09Fg';
 
-    // Requisição ao seu endpoint Flask
-    fetch('/api/heatmap-vendas')
-        .then(response => response.json())
-        .then(data => {
-            // Cria o heatmap com os dados recebidos
-            const heat = L.heatLayer(data.heatmap, {
-                radius: 1000,      // ← Tamanho da influência de cada ponto
-                blur: 15,        // ← Suavidade da transição
-                maxZoom: 14,     // ← Zoom onde o efeito é mais forte
-                gradient: {
-                    0.2: '#00f',
-                    0.4: '#0ff',
-                    0.6: '#0f0',
-                    0.8: '#ff0',
-                    1.0: '#f00'
-                } // ← Gradiente de cor (opcional)
-            });
-            heat.addTo(map);
-        })
-        .catch(err => {
-            console.error('Erro ao carregar o heatmap:', err);
-        });
+  // 2. Crie o mapa Mapbox
+  const map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/mapbox/streets-v12',  // ou outro estilo Mapbox
+    center: [-38.52, -3.73],  // [lon, lat]
+    zoom: 12
+  });
+
+  map.on('load', () => {
+  fetch('/dashboard/api/heatmap')
+    .then(r => r.json())
+    .then(({ heatmap }) => {
+      const features = heatmap.map(([lat, lon, weight]) => ({
+        type: 'Feature',
+        properties: { weight },
+        geometry: { type: 'Point', coordinates: [lon, lat] }
+      }));
+      map.addSource('vendas', {
+        type: 'geojson',
+        data: { type: 'FeatureCollection', features }
+      });
+      map.addLayer({
+        id: 'heat-vendas',
+        type: 'heatmap',
+        source: 'vendas',
+        maxzoom: 17,
+        paint: {
+          'heatmap-weight': ['get', 'weight'],
+          'heatmap-radius': 20,
+          'heatmap-intensity': 0.6,
+          'heatmap-opacity': 0.7,
+          'heatmap-color': [
+            'interpolate', ['linear'], ['heatmap-density'],
+            0, 'rgba(0,0,255,0)',
+            0.1, 'blue',
+            0.2, 'cyan',
+            0.4, 'lime',
+            0.6, 'yellow',
+            0.8, 'red'
+          ]
+        }
+      });
+    })
+    .catch(console.error);
 });
+
 </script>
-<!-- Leaflet CSS -->
-<link
-  rel="stylesheet"
-  href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-  integrity="sha256-o9N1j5yChsApsXdPugS1UBFKfihf0sAcV5Bq+1G5pJE="
-  crossorigin=""
-/>
-
-<!-- Leaflet JS -->
-<script
-  src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-  integrity="sha256-o9N1j5yChsApsXdPugS1UBFKfihf0sAcV5Bq+1G5pJE="
-  crossorigin=""
-></script>
-
-<!-- Leaflet.heat plugin JS -->
-<script src="https://unpkg.com/leaflet.heat/dist/leaflet-heat.js"></script>
-
 </body>
 </html>

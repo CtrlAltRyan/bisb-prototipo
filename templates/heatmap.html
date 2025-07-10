@@ -1,0 +1,70 @@
+{# templates/heatmap.html #}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Heatmap de Vendas</title>
+
+  <!-- Mapbox GL CSS -->
+  <link
+    href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css"
+    rel="stylesheet"
+  />
+  <style>
+    /* ajuste de container */
+    #map { width: 100%; height: 500px; }
+  </style>
+</head>
+<body>
+  <h1>Mapa de Vendas por Bairro</h1>
+  <div class="chart-container">
+    <h2>Bairros em alta 🔥</h2>
+    <div id="map"></div>
+  </div>
+
+  <!-- Mapbox GL JS -->
+  <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
+  <script>
+    // 1) Seu token Mapbox
+    mapboxgl.accessToken = 'SEU_MAPBOX_ACCESS_TOKEN';
+
+    // 2) Cria o mapa
+    const map = new mapboxgl.Map({
+      container: 'map',
+      style: 'mapbox://styles/mapbox/streets-v11',
+      center: [-38.52, -3.73],
+      zoom: 12
+    });
+
+    map.on('load', () => {
+      // 3) Busca dados do back-end
+      fetch('/api/heatmap-vendas')
+        .then(res => res.json())
+        .then(({ heatmap }) => {
+          // 4) Transforma em GeoJSON
+          const features = heatmap.map(([lat, lon, weight]) => ({
+            type: 'Feature',
+            properties: { weight },
+            geometry: { type: 'Point', coordinates: [lon, lat] }
+          }));
+          const geojson = {
+            type: 'FeatureCollection',
+            features
+          };
+
+          // 5) Adiciona fonte e camada heatmap
+          map.addSource('vendas', { type: 'geojson', data: geojson });
+          map.addLayer({
+            id: 'heat-vendas',
+            type: 'heatmap',
+            source: 'vendas',
+            maxzoom: 17,
+            paint: {
+              'heatmap-weight': ['get', 'weight'],
+              'heatmap-radius': 25,
+              'heatmap-intensity': 1,
+              'heatmap-opacity': 0.8,
+              'heatmap-color': [
+                'interpolate', ['linear'], ['heatmap-density'],
+                0, 'rgba(0,0,255,0)',
+                0.2, 'blue',

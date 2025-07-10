@@ -1,7 +1,8 @@
 from connection import get_db_connection
-from flask import Blueprint, jsonify
-import pandas as pd
+from flask import Blueprint, jsonify, render_template
 from .info import *
+import pandas as pd
+
 
 
 dashboard_bp = Blueprint('dashboard', __name__)
@@ -73,29 +74,46 @@ def topclientes():
     
     return jsonify(chart_data)
 
-@dashboard_bp.route('/api/heatmap-vendas')
-def heatmap_vendas():
-    df = get_vendas_por_bairro()  # função que retorna DataFrame com 'bairro' e 'n_vendas'
+@dashboard_bp.route('/api/heatmap')
+def heatmap():
+
+    df = get_vendas_por_bairro()
 
     bairros_coords = {
-        "Meireles": [-3.7184, -38.5000],
-        "Aldeota": [-3.7306, -38.5215],
-        "Parquelândia": [-3.7492, -38.5637],
-        "Centro": [-3.7300, -38.5200],
-        "Fátima": [-3.7490, -38.5250],
+        "Aldeota":            [-3.7306, -38.5215],
+        "Meireles":           [-3.7184, -38.5000],
+        "Papicu":             [-3.7285, -38.4934],
+        "Cocó":               [-3.7231, -38.4885],
+        "Centro":             [-3.7300, -38.5200],
+        "Benfica":            [-3.7289, -38.5176],
+        "Parquelândia":       [-3.7492, -38.5637],
+        "Montese":            [-3.7584, -38.5051],
+        "Fátima":             [-3.7490, -38.5250],
+        "Messejana":          [-3.8549, -38.4828],
+        "Dionísio Torres":    [-3.7437, -38.5206],
+        "Praia de Iracema":   [-3.7181, -38.5433],
+        "Varjota":            [-3.7250, -38.5093],
+        "Joaquim Távora":     [-3.7173, -38.5438],
+        "Maraponga":          [-3.8015, -38.5572],
+        "Mondubim":           [-3.7712, -38.5967],
         "Cidade dos Funcionários": [-3.7769, -38.5013],
-        "Pici": [-3.7475, -38.5728],
-        "Praia de Iracema": [-3.7181, -38.5433],
-        "Serrinha": [-3.7655, -38.5523]
-        # Adicione mais bairros conforme necessário
+        "Sapiranga":          [-3.7240, -38.4487],
+        "Serrinha":           [-3.7655, -38.5523],
+        "Conjunto Ceará":     [-3.7625, -38.5525],
+        "Pici":               [-3.7475, -38.5728],
+        "Parangaba":          [-3.7665, -38.5843],
+        "Bom Jardim":         [-3.7265, -38.5368],
+        "Jóquei Clube":       [-3.7496, -38.5245],
+        "Parque Dois Irmãos": [-3.7317, -38.5268],
+        "Damas":              [-3.7323, -38.5453],
     }
 
-    heat_data = []
+    heatmap = []
     for _, row in df.iterrows():
-        bairro = row['bairro']
-        if bairro in bairros_coords:
-            lat, lon = bairros_coords[bairro]
-            intensity = row['n_vendas']
-            heat_data.append([lat, lon, intensity])  # formato ideal para HeatMap
+        coords = bairros_coords.get(row['bairro'])
+        if not coords:
+            continue
+        lat, lon = coords
+        heatmap.append([lat, lon, float(row['n_vendas'])])
+    return jsonify({"heatmap": heatmap})
 
-    return jsonify({"heatmap": heat_data})
