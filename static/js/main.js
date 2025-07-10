@@ -333,7 +333,7 @@ fetch('/dashboard/api/vendasservico')  // grafico
 // .card--sales { background: #A88A80; }
 // .card--clients { background: #C6B4AE; }
 // .card--active-clients { background: rgba(126, 100, 91, 0.87); }
-// .card--most-sold { background: #EED0C4; }
+// .card--most-sold { background: #EED0C4;
     
     new Chart(ctx, {
         type: 'doughnut',
@@ -356,11 +356,12 @@ fetch('/dashboard/api/vendasservico')  // grafico
                     '#EED0C4',
                     '#E9D8D6'
                 ],       // Cor da borda
-                borderWidth: 1,                             // Espessura da borda
+                borderWidth: 0.9,                             // Espessura da borda
                 borderRadius: 0                           // Arredondamento das barras
             }]
         },
         options: {
+            cutout: '60%', // Diminui a espessura do anel do doughnut
             responsive: true, // Ajusta ao tamanho do container, mas respeita o width/height do <canvas> se fixado
             plugins: {
                 tooltip: {
