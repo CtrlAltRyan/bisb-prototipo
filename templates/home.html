@@ -9,8 +9,17 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="icon" href="{{ url_for('static', filename='images/logo_browser.png') }}" type="image/x-icon">
-    
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet.heat/dist/leaflet-heat.js"></script>
+    <link
+  rel="stylesheet"
+  href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  integrity="sha256-o9N1j5yChsApsXdPugS1UBFKfihf0sAcV5Bq+1G5pJE="
+  crossorigin=""
+/>
 </head>
 <body>
 
@@ -48,12 +57,13 @@
                             <span>Cadastrar Usuário</span>
                     {% else %}
                     <li class="sidebar__item">
-                        <a class="sidebar__link" href="mailto:lassance@ufc.br">
+                        <a class="sidebar__link" href="mailto:lassance@ufc.br?subject=Ajuda&body=Olá, preciso de suporte.">
                             <img src="{{ url_for('static', filename='images/support_icon.png') }}" alt="" class="sidebarsupport__icon">
                             <span>Suporte</span>
                         </a>
                     {% endif %} 
                     </li>
+                    {% endif %}
                 </ul>
             </nav>
 
@@ -94,8 +104,8 @@
                 </div>
                 <div class="card card--clients">
                     <h3 class="card__title">Vendas <small>no mês atual</small></h3>
-                    <p class="card__value">{{clientesnum}}
-                        <img src="{{ url_for('static', filename='images/Arrow 1.svg') }}"alt="Ícone de Seta para Cima">
+                    <p class="card__value"> R$ {{salesChange}}
+                        <!-- img src="{{ url_for('static', filename='images/Arrow 1.svg') }}"alt="Ícone de Seta para Cima" -->
                     </p>
                 </div>
                 <div class="card card--active-clients">
@@ -112,99 +122,81 @@
             <section class="charts-section">
                 
                 <div class="chart-container">
-                    <h2 class="chart-container__title">Vendas por serviço</h2>
-                    <img src="caminho/para/grafico-vendas-por-servico.png" alt="Gráfico de rosca mostrando a distribuição de vendas por serviço" class="chart-container__image">
+                    <h2 class="chart-container__title">Fluxo de caixa</h2>
+                    <canvas id="graficoVendasPorMes" > ></canvas>
                 </div>
                 <div class="chart-container">
-                    <h2 class="chart-container__title">Fluxo de caixa</h2>
-                    <img src="caminho/para/grafico-fluxo-de-caixa.png" alt="Gráfico de colunas mostrando o fluxo de caixa" class="chart-container__image">
+                    <h2 class="chart-container__title">Vendas por serviço </h2>
+                    <canvas id="graficoVendasPorServico" > ></canvas>
                 </div>
 
                 <div class="chart-container">
                     <h2 class="chart-container__title">Panorama de Clientes</h2>
-                    <div style="position: relative; height: 300px; width: 100%;">
-                        <canvas id="bairrosChart"></canvas>
-                    </div>
+                    
+                    <canvas id="graficoTopClientes"> ></canvas>
+                
                 </div>
 
                 <div class="chart-container">
                     <h2 class="chart-container__title">Bairros em alta 🔥</h2>
-                    <img src="caminho/para/grafico-fluxo-de-caixa.png" alt="Gráfico de colunas mostrando o fluxo de caixa" class="chart-container__image">
+                    <div id="map" style="width: 100%; height: 400px;"></div>
                 </div>
             </section>
 
         </main>
     </div>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    // Cria o mapa centrado em Fortaleza
+    const map = L.map('map').setView([-3.7306, -38.5215], 12); // centro de Fortaleza
 
-    <script>
-fetch('/dashboard/api/sales-chart')
-  .then(res => res.json())
-  .then(data => {
-    const ctx = document.getElementById('bairrosChart').getContext('2d');
+    // Escolha da aparência do mapa base — aqui você pode mudar
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+        attribution: '© OpenStreetMap',
+        maxZoom: 18,
+    }).addTo(map);
 
-    const gradient = ctx.createLinearGradient(0, 0, 600, 0);
-    gradient.addColorStop(0, 'rgba(54, 162, 235, 0.8)');
-    gradient.addColorStop(1, 'rgba(153, 102, 255, 0.8)');
-
-    new Chart(ctx, {
-      type: 'bar',
-      data: {
-        labels: data.labels,
-        datasets: [{
-          label: 'Número de Clientes por Bairro',
-          data: data.data,
-          backgroundColor: gradient,
-          borderColor: 'rgba(75, 75, 75, 1)',
-          borderWidth: 1,
-          borderRadius: 6, // borda arredondada nas barras
-          barThickness: 20
-        }]
-      },
-      options: {
-        indexAxis: 'y',
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          title: {
-            display: true,
-            text: 'Distribuição de Clientes por Bairro',
-            font: { size: 18 },
-            padding: { top: 10, bottom: 30 }
-          },
-          legend: { display: false },
-          tooltip: {
-            callbacks: {
-              label: (ctx) => `Clientes: ${ctx.parsed.x}`
-            }
-          }
-        },
-        scales: {
-          x: {
-            beginAtZero: true,
-            ticks: {
-              color: '#333',
-              font: { size: 14 }
-            },
-            grid: {
-              borderDash: [5, 5],
-              color: 'rgba(0, 0, 0, 0.1)'
-            }
-          },
-          y: {
-            ticks: {
-              color: '#333',
-              font: { size: 14 }
-            }
-          }
-        },
-        animation: {
-          duration: 1000,
-          easing: 'easeOutQuart'
-        }
-      }
-    });
-  })
-  .catch(err => console.error('Erro ao carregar gráfico:', err));
+    // Requisição ao seu endpoint Flask
+    fetch('/api/heatmap-vendas')
+        .then(response => response.json())
+        .then(data => {
+            // Cria o heatmap com os dados recebidos
+            const heat = L.heatLayer(data.heatmap, {
+                radius: 1000,      // ← Tamanho da influência de cada ponto
+                blur: 15,        // ← Suavidade da transição
+                maxZoom: 14,     // ← Zoom onde o efeito é mais forte
+                gradient: {
+                    0.2: '#00f',
+                    0.4: '#0ff',
+                    0.6: '#0f0',
+                    0.8: '#ff0',
+                    1.0: '#f00'
+                } // ← Gradiente de cor (opcional)
+            });
+            heat.addTo(map);
+        })
+        .catch(err => {
+            console.error('Erro ao carregar o heatmap:', err);
+        });
+});
 </script>
+<!-- Leaflet CSS -->
+<link
+  rel="stylesheet"
+  href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  integrity="sha256-o9N1j5yChsApsXdPugS1UBFKfihf0sAcV5Bq+1G5pJE="
+  crossorigin=""
+/>
+
+<!-- Leaflet JS -->
+<script
+  src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+  integrity="sha256-o9N1j5yChsApsXdPugS1UBFKfihf0sAcV5Bq+1G5pJE="
+  crossorigin=""
+></script>
+
+<!-- Leaflet.heat plugin JS -->
+<script src="https://unpkg.com/leaflet.heat/dist/leaflet-heat.js"></script>
+
 </body>
 </html>

@@ -1,5 +1,6 @@
 from connection import get_db_connection
 from flask import session
+import pandas as pd
 
 def get_topservice():
     conn = get_db_connection()
@@ -57,20 +58,22 @@ def get_customersnum():
 
     return clientesnum
 
-def get_customerschange():
+def get_saleschange():
     conn = get_db_connection()
     cur = conn.cursor()
 
     cur.execute("""
-         SELECT COUNT(nome) FROM salao.clientes;
+         SELECT SUM(valor) 
+         FROM salao.vendas
+         WHERE DATE_TRUNC('month', data_venda) = DATE_TRUNC('month', CURRENT_DATE);   
     """)
-    clientesChange = cur.fetchone()
-    clientesChange = clientesChange[0] if clientesChange else "0"
+    salesChange = cur.fetchone()
+    salesChange = salesChange[0] if salesChange else "0"
 
     cur.close()
     conn.close()
 
-    return clientesChange
+    return salesChange
 
 def adm_check():
     conn = get_db_connection()
@@ -81,8 +84,21 @@ def adm_check():
 
     permission = cur.fetchone()
     cur.close()
+    conn.close()
 
     return permission[0] if permission else False
 
-def get_pfp():
-    pfp = session['user']
+def get_vendas_por_bairro():
+    conn = get_db_connection()
+    cur = conn.cursor()
+    cur.execute("""
+    SELECT c.bairro, COUNT(*) AS n_vendas
+    FROM salao.vendas AS v
+    JOIN salao.clientes AS c ON v.id_cliente = c.id
+    GROUP BY c.bairro
+    ORDER BY n_vendas DESC;
+    """)
+    rows = cur.fetchall()
+    cur.close()
+    conn.close()
+    return pd.DataFrame(rows, columns=['bairro', 'n_vendas'])

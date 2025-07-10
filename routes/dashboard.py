@@ -1,46 +1,101 @@
 from connection import get_db_connection
 from flask import Blueprint, jsonify
 import pandas as pd
-import plotly.express as px
+from .info import *
+
 
 dashboard_bp = Blueprint('dashboard', __name__)
 
-@dashboard_bp.route('/api/sales-chart') # Podemos manter a mesma rota
+@dashboard_bp.route('/api/vendasservico') 
 def sales_chart():
     conn = get_db_connection()
     cur = conn.cursor()
 
-    # Consulta 1
-    cur.execute("SELECT bairro, COUNT(*) as n_clientes FROM salao.clientes GROUP BY bairro ORDER BY n_clientes DESC LIMIT 5;")
-    rows1 = cur.fetchall()
-    df1 = pd.DataFrame(rows1, columns=['bairro', 'clientes'])
+    cur.execute(""" SELECT s.nome_servico,  
+    COUNT(v.id_servico) AS n_vendas,
+	SUM(v.valor) as v_vendas FROM salao.vendas AS v JOIN                         
+    salao.servicos AS s ON v.id_servico = s.id GROUP BY
+    s.nome_servico ORDER BY n_vendas DESC, v_vendas DESC LIMIT 5; """)
 
-    # Consulta 2
-    cur.execute("SELECT servico, COUNT(*) as n_vendas FROM salao.vendas GROUP BY servico ORDER BY n_vendas DESC LIMIT 5;")
     rows2 = cur.fetchall()
-    df2 = pd.DataFrame(rows2, columns=['servico', 'vendas'])
-
-    cur.execute("SELECT DATE_TRUNC('month', data_venda) AS mes, SUM(valor) AS total_vendas FROM salao.vendas GROUP BY mes ORDER BY mes;")
-    rows3 = cur.fetchall()
-    df3 = pd.DataFrame(rows3, columns=['mes', 'total_vendas'])
-
+    df2 = pd.DataFrame(rows2, columns=['servico', 'qtd', 'valor'])
     cur.close()
     conn.close()
 
-    # Monta o JSON de resposta
     chart_data = {
-        'clientes_por_bairro': {
-            'labels': df1['bairro'].tolist(),
-            'data': df1['clientes'].tolist()
-        },
         'vendas_por_servico': {
             'labels': df2['servico'].tolist(),
-            'data': df2['vendas'].tolist()
-        },
-        'vendas_por_mes': {
-            'labels': df3['mes'].tolist(),
-            'data': df2['total_vendas'].to_list()
-        }
+            'data': df2[['qtd', 'valor']].to_dict(orient='records')}}
+    
+    return jsonify(chart_data)
+
+@dashboard_bp.route('/api/vendasmes') 
+def vendasmes():
+    conn = get_db_connection()
+    cur = conn.cursor()
+
+    cur.execute(""" SELECT 
+    TO_CHAR(DATE_TRUNC('month', data_venda), 'TMMonth/YYYY') AS mes_nome,
+    COUNT(*) AS total_vendas, SUM(valor) AS valor_total FROM  salao.vendas
+    GROUP BY mes_nome, DATE_TRUNC('month', data_venda) ORDER BY 
+    DATE_TRUNC('month', data_venda);""")
+    
+    rows2 = cur.fetchall()
+    df2 = pd.DataFrame(rows2, columns=['mes', 'qtd', 'valor'])
+    cur.close()
+    conn.close()
+
+    chart_data = {
+        'fluxo_por_mes': {
+            'labels': df2['mes'].tolist(),
+            'data': df2[['qtd', 'valor']].to_dict(orient='records')}}
+    
+    return jsonify(chart_data)
+
+@dashboard_bp.route('/api/topClientes') 
+def topclientes():
+    conn = get_db_connection()
+    cur = conn.cursor()
+
+    cur.execute(""" SELECT c.nome AS cliente, COUNT(v.id) AS qtd_vendas,
+    SUM(v.valor) AS valor_total FROM salao.vendas AS v JOIN salao.clientes AS c ON v.id_cliente = c.id
+    GROUP BY c.nome ORDER BY valor_total DESC, qtd_vendas DESC LIMIT 5; """)
+    
+    rows2 = cur.fetchall()
+    df2 = pd.DataFrame(rows2, columns=['cliente', 'qtd', 'valor'])
+    cur.close()
+    conn.close()
+
+    chart_data = {
+        'top_clientes': {
+            'labels': df2['cliente'].tolist(),
+            'data': df2[['qtd', 'valor']].to_dict(orient='records')}}
+    
+    return jsonify(chart_data)
+
+@dashboard_bp.route('/api/heatmap-vendas')
+def heatmap_vendas():
+    df = get_vendas_por_bairro()  # função que retorna DataFrame com 'bairro' e 'n_vendas'
+
+    bairros_coords = {
+        "Meireles": [-3.7184, -38.5000],
+        "Aldeota": [-3.7306, -38.5215],
+        "Parquelândia": [-3.7492, -38.5637],
+        "Centro": [-3.7300, -38.5200],
+        "Fátima": [-3.7490, -38.5250],
+        "Cidade dos Funcionários": [-3.7769, -38.5013],
+        "Pici": [-3.7475, -38.5728],
+        "Praia de Iracema": [-3.7181, -38.5433],
+        "Serrinha": [-3.7655, -38.5523]
+        # Adicione mais bairros conforme necessário
     }
 
-    return jsonify(chart_data)
+    heat_data = []
+    for _, row in df.iterrows():
+        bairro = row['bairro']
+        if bairro in bairros_coords:
+            lat, lon = bairros_coords[bairro]
+            intensity = row['n_vendas']
+            heat_data.append([lat, lon, intensity])  # formato ideal para HeatMap
+
+    return jsonify({"heatmap": heat_data})
