@@ -330,15 +330,32 @@ fetch('/dashboard/api/vendasservico')  // grafico
 
     const ctx = document.getElementById('graficoVendasPorServico').getContext('2d');
 
+// .card--sales { background: #A88A80; }
+// .card--clients { background: #C6B4AE; }
+// .card--active-clients { background: rgba(126, 100, 91, 0.87); }
+// .card--most-sold { background: #EED0C4; }
+    
     new Chart(ctx, {
         type: 'doughnut',
         data: {
-            labels: labels,
+            //labels: labels,
             datasets: [{
                 label: 'Vendas por Serviço',
                 data: qtdVendas,
-                backgroundColor: 'rgba(75, 192, 192, 0.7)', // Cor das barras
-                borderColor: 'rgba(75, 192, 192, 1)',       // Cor da borda
+                backgroundColor: [
+                    'rgba(126, 100, 91, 0.87)',
+                    '#A88A80',
+                    '#C6B4AE',
+                    '#EED0C4',
+                    '#E9D8D6'
+                ], // Cor das barras
+                borderColor: [
+                    'rgba(126, 100, 91, 0.87)',
+                    '#A88A80',
+                    '#C6B4AE',
+                    '#EED0C4',
+                    '#E9D8D6'
+                ],       // Cor da borda
                 borderWidth: 1,                             // Espessura da borda
                 borderRadius: 0                           // Arredondamento das barras
             }]
@@ -437,8 +454,20 @@ fetch('/dashboard/api/vendasmes')  // grafico
             datasets: [{
                 label: 'Vendas por Mês',
                 data: qtdVendas,
-                backgroundColor: 'rgba(75, 192, 192, 0.7)', // Cor das barras
-                borderColor: 'rgba(75, 192, 192, 1)',       // Cor da borda
+                backgroundColor: [
+                    'rgba(126, 100, 91, 0.87)',
+                    '#A88A80',
+                    '#C6B4AE',
+                    '#EED0C4',
+                    '#E9D8D6'
+                ], // Cor das barras
+                borderColor: [
+                    'rgba(126, 100, 91, 0.87)',
+                    '#A88A80',
+                    '#C6B4AE',
+                    '#EED0C4',
+                    '#E9D8D6'
+                ],       // Cor da borda
                 borderWidth: 1,                             // Espessura da borda
                 borderRadius: 5                             // Arredondamento das barras
             }]
@@ -530,8 +559,20 @@ fetch('/dashboard/api/topClientes')  // grafico
             datasets: [{
                 label: 'Clientes',
                 data: qtdVendas,
-                backgroundColor: 'rgba(75, 192, 192, 0.7)', // Cor das barras
-                borderColor: 'rgba(75, 192, 192, 1)',       // Cor da borda
+                backgroundColor: [
+                    'rgba(126, 100, 91, 0.87)',
+                    '#A88A80',
+                    '#C6B4AE',
+                    '#EED0C4',
+                    '#E9D8D6'
+                ], // Cor das barras
+                borderColor: [
+                    'rgba(126, 100, 91, 0.87)',
+                    '#A88A80',
+                    '#C6B4AE',
+                    '#EED0C4',
+                    '#E9D8D6'
+                ],       // Cor da borda
                 borderWidth: 1,                             // Espessura da borda
                 borderRadius: 5                             // Arredondamento das barras
             }]
