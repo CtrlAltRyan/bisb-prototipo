@@ -330,11 +330,8 @@ fetch('/dashboard/api/vendasservico')  // grafico
 
     const ctx = document.getElementById('graficoVendasPorServico').getContext('2d');
 
-// .card--sales { background: #A88A80; }
-// .card--clients { background: #C6B4AE; }
-// .card--active-clients { background: rgba(126, 100, 91, 0.87); }
-// .card--most-sold { background: #EED0C4;
-    
+    const totalVendas = qtdVendas.reduce((a, b) => a + b, 0);
+
     new Chart(ctx, {
         type: 'doughnut',
         data: {
@@ -389,6 +386,10 @@ fetch('/dashboard/api/vendasservico')  // grafico
                 },
                 legend: {
                     display: false // Você pode colocar true se quiser mostrar a legenda
+                },
+                centerText: {
+                    display: true,
+                    text: totalVendas.toString()
                 }
             },
             scales: {
@@ -429,7 +430,28 @@ fetch('/dashboard/api/vendasservico')  // grafico
                     }
                 }
             }
-        }
+        },
+        plugins: [{
+            id: 'centerText',
+            afterDraw: function(chart) {
+                const opts = chart.config.options.plugins.centerText;
+                if (opts && opts.display) {
+                    const ctx = chart.ctx;
+                    ctx.save();
+                    ctx.font = 'bold 40px Open Sans, Arial';
+                    ctx.fillStyle = '#333';
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    const x = chart.getDatasetMeta(0).data[0].x;
+                    const y = chart.getDatasetMeta(0).data[0].y;
+                    ctx.fillText(opts.text, x, y - 5); // número mais para baixo
+                    ctx.font = '16px Open Sans, Arial';
+                    ctx.fillStyle = '#666';
+                    ctx.fillText('vendas', x, y + 23); // texto ainda mais para baixo
+                    ctx.restore();
+                }
+            }
+        }]
     });
 })
 .catch(error => {
