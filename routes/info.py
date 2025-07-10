@@ -1,7 +1,6 @@
 from connection import get_db_connection
 from flask import session
 import pandas as pd
-import logging
 
 def get_topservice():
     conn = get_db_connection()
@@ -29,6 +28,9 @@ LIMIT 1;
 
     return servico_mais_vendido
 
+def formatar_decimal_br(numero):
+    return f"{numero:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
+
 def get_amount():
     conn = get_db_connection()
     cur = conn.cursor()
@@ -37,10 +39,14 @@ def get_amount():
         SELECT SUM(valor) AS faturamento_total FROM salao.vendas;
     """)
     montante = cur.fetchone()
-    montante = montante[0] if montante else "0"
+    montante = montante[0] 
+    if montante is None:
+        montante = 0
 
     cur.close()
     conn.close()
+    montante =  formatar_decimal_br(montante)
+    montante = str(montante)
 
     return montante
 
@@ -52,12 +58,15 @@ def get_customersnum():
         SELECT COUNT(nome) FROM salao.clientes;
     """)
     clientesnum = cur.fetchone()
-    clientesnum = clientesnum[0] if clientesnum else "0"
+    clientesnum = clientesnum[0] 
+    if clientesnum is None:
+        clientesnum = 0
 
     cur.close()
     conn.close()
 
     return clientesnum
+
 
 def get_saleschange():
     conn = get_db_connection()
@@ -69,11 +78,14 @@ def get_saleschange():
          WHERE DATE_TRUNC('month', data_venda) = DATE_TRUNC('month', CURRENT_DATE);   
     """)
     salesChange = cur.fetchone()
-    salesChange = salesChange[0] if salesChange else "0"
+    salesChange = salesChange[0] 
+    if salesChange is None:
+        salesChange = 0
 
     cur.close()
     conn.close()
-
+    salesChange = formatar_decimal_br(salesChange)
+    salesChange = str(salesChange)
     return salesChange
 
 def adm_check():

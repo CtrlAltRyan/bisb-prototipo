@@ -723,6 +723,7 @@ body {
     border-radius: 12px;
     border: 1px solid #EAEAEA;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    
 }
 
 .chart-container__title {
@@ -1003,4 +1004,16 @@ a {
 }
 #form-adicionar-venda .btn-salvar:hover {
     background-color: #45a049;
+}
+
+.chart-container .charts-row {
+  display: flex;            /* Coloca os canvas lado a lado */
+  gap: 20px;                /* Espaço entre os gráficos */
+  justify-content: center;  /* Centraliza os gráficos na horizontal */
+  flex-wrap: wrap;          /* Permite quebrar para baixo em telas pequenas */
+}
+
+.chart-container canvas {
+  max-width: 100%;
+  height: 300px;            /* Ajuste conforme necessário */
 }

@@ -74,6 +74,29 @@ def topclientes():
     
     return jsonify(chart_data)
 
+@dashboard_bp.route('/api/botClientes') 
+def botclientes():
+    conn = get_db_connection()
+    cur = conn.cursor()
+
+    cur.execute(""" SELECT c.nome AS cliente, COUNT(v.id) AS qtd_vendas,
+    SUM(v.valor) AS valor_total FROM salao.vendas AS v JOIN salao.clientes AS c ON v.id_cliente = c.id
+    GROUP BY c.nome ORDER BY valor_total ASC, qtd_vendas DESC LIMIT 5; """)
+    
+    rows2 = cur.fetchall()
+    df2 = pd.DataFrame(rows2, columns=['cliente', 'qtd', 'valor'])
+    cur.close()
+    conn.close()
+
+    chart_data = {
+        'bot_clientes': {
+            'labels': df2['cliente'].tolist(),
+            'data': df2[['qtd', 'valor']].to_dict(orient='records')}}
+    
+    return jsonify(chart_data)
+
+
+
 @dashboard_bp.route('/api/heatmap')
 def heatmap():
 
