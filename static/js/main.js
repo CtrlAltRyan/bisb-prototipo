@@ -335,7 +335,7 @@ fetch('/dashboard/api/vendasservico')  // grafico
     new Chart(ctx, {
         type: 'doughnut',
         data: {
-            //labels: labels,
+            labels: labels,
             datasets: [{
                 label: 'Vendas por Serviço',
                 data: qtdVendas,
@@ -385,7 +385,13 @@ fetch('/dashboard/api/vendasservico')  // grafico
                     }
                 },
                 legend: {
-                    display: false // Você pode colocar true se quiser mostrar a legenda
+                    display: true,
+                    position: 'bottom', // legenda embaixo do gráfico
+                    labels: {
+                        boxWidth: 16, // quadradinho menor
+                        boxHeight: 16, // quadradinho menor
+                        borderRadius: 4 // deixa o quadradinho mais arredondado
+                    }
                 },
                 centerText: {
                     display: true,
@@ -395,9 +401,8 @@ fetch('/dashboard/api/vendasservico')  // grafico
             scales: {
                 
                 x: {
-                    grid: {
-        display: false 
-      },
+                    display: false,
+                    grid: { display: false },
                     title: {
                         display: false,
                         text: 'Serviços',
@@ -413,9 +418,8 @@ fetch('/dashboard/api/vendasservico')  // grafico
                     }
                 },
                 y: {
-                    grid: {
-        display: false 
-      },
+                    display: false,
+                    grid: { display: false },
                     beginAtZero: true,
                     title: {
                         display: false,
@@ -479,7 +483,7 @@ fetch('/dashboard/api/vendasmes')  // grafico
             datasets: [{
                 label: 'Vendas por Mês',
 
-                data: qtdVendas,
+                data: valores,
                 backgroundColor: [
                     'rgba(126, 100, 91, 0.87)',
                     '#A88A80',
@@ -592,7 +596,7 @@ fetch('/dashboard/api/topClientes')
             labels: labels,
             datasets: [{
                 label: 'Clientes',
-                data: qtdVendas,
+                data: valores,
                 backgroundColor: [
                     'rgba(126, 100, 91, 0.87)',
                     '#A88A80',
@@ -612,7 +616,8 @@ fetch('/dashboard/api/topClientes')
         }]
       },
       options: {
-        responsive: false,
+        indexAxis: 'y',
+        responsive: true,
         plugins: {
           tooltip: {
             callbacks: {
@@ -631,21 +636,22 @@ fetch('/dashboard/api/topClientes')
             }
           },
           title: {
-            display: true,
-            text: 'Melhores Clientes',
+            display: false,
+            text: 'Clientes VIP',
             font: {
               size: 18
             }
           },
           legend: {
-            display: false
+            display: false,
+            text: 'Valor Total'
           }
         },
         scales: {
           x: {
             title: {
-              display: false,
-              text: 'Mês',
+              display: true,
+              text: 'Valor Total',
               font: {
                 size: 14
               }
@@ -707,8 +713,20 @@ fetch('/dashboard/api/botClientes')  // gráfico
         datasets: [{
           label: 'Clientes',
           data: qtdVendas,
-          backgroundColor: 'rgba(75, 192, 192, 0.7)',
-          borderColor: 'rgba(75, 192, 192, 1)',
+          backgroundColor: [
+                    'rgba(126, 100, 91, 0.87)',
+                    '#A88A80',
+                    '#C6B4AE',
+                    '#EED0C4',
+                    '#E9D8D6'
+                ], // Cor das barras
+                borderColor: [
+                    'rgba(126, 100, 91, 0.87)',
+                    '#A88A80',
+                    '#C6B4AE',
+                    '#EED0C4',
+                    '#E9D8D6'
+                ],
           borderWidth: 1,
           borderRadius: 0 // barras coladas retas
         }]
