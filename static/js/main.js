@@ -338,7 +338,7 @@ fetch('/dashboard/api/vendasservico')  // grafico
     new Chart(ctx, {
         type: 'doughnut',
         data: {
-            //labels: labels,
+            labels: labels,
             datasets: [{
                 label: 'Vendas por Serviço',
                 data: qtdVendas,
@@ -590,7 +590,7 @@ fetch('/dashboard/api/topClientes')
         }]
       },
       options: {
-        responsive: false,
+        responsive: true,
         plugins: {
           tooltip: {
             callbacks: {
@@ -665,111 +665,5 @@ fetch('/dashboard/api/topClientes')
   .catch(error => {
     console.error('Erro ao carregar os dados dos gráficos:', error);
   });
-
-
-fetch('/dashboard/api/botClientes')  // gráfico
-  .then(response => response.json())
-  .then(data => {
-    const labels = data.bot_clientes.labels;
-    const servicos = data.bot_clientes.data;
-
-    const qtdVendas = servicos.map(item => item.qtd);
-    const valores = servicos.map(item => parseFloat(item.valor));
-
-    const ctx = document.getElementById('graficobotClientes').getContext('2d');
-
-    new Chart(ctx, {
-      type: 'bar',
-      data: {
-        labels: labels,
-        datasets: [{
-          label: 'Clientes',
-          data: qtdVendas,
-          backgroundColor: 'rgba(75, 192, 192, 0.7)',
-          borderColor: 'rgba(75, 192, 192, 1)',
-          borderWidth: 1,
-          borderRadius: 0 // barras coladas retas
-        }]
-      },
-      options: {
-        responsive: false,
-        plugins: {
-          tooltip: {
-            callbacks: {
-              label: function(context) {
-                const index = context.dataIndex;
-                const qtd = qtdVendas[index];
-                const valor = valores[index];
-                return [
-                  `Vendas: ${qtd}`,
-                  `Valor total: R$ ${valor.toLocaleString('pt-BR', {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2
-                  })}`
-                ];
-              }
-            }
-          },
-          title: {
-            display: true,
-            text: 'Piores Clientes',
-            font: {
-              size: 18
-            }
-          },
-          legend: {
-            display: false
-          }
-        },
-        scales: {
-          x: {
-            title: {
-              display: false,
-              text: 'Mês',
-              font: {
-                size: 14
-              }
-            },
-            ticks: {
-              font: {
-                size: 12
-              }
-            },
-            grid: {
-              display: false
-            },
-            categoryPercentage: 1.0,
-            barPercentage: 1.0
-          },
-          y: {
-            beginAtZero: true,
-            title: {
-              display: false,
-              text: 'Quantidade de Vendas',
-              font: {
-                size: 14
-              }
-            },
-            ticks: {
-              font: {
-                size: 12
-              }
-            },
-            grid: {
-              display: false
-            }
-          }
-        }
-      }
-    });
-  })
-  .catch(error => {
-    console.error('Erro ao carregar os dados dos gráficos:', error);
-  });
-
-
-
-
-
 
 
