@@ -49,6 +49,7 @@ def register_page():
        #name = request.form['name']
        user = request.form['user']
        password = request.form['password']
+       permission = request.form.get('permission', False)
        password = password.encode('utf-8')
        cur.execute("SELECT usuario, senha_hash FROM salao.usuarios WHERE usuario = %s", (user,))
        result = cur.fetchone()
@@ -63,7 +64,10 @@ def register_page():
            password = password.replace("'", "")
            conn = get_db_connection()
            cur = conn.cursor()
-           cur.execute("INSERT INTO salao.usuarios (usuario, senha_hash, is_adm) VALUES (%s, %s, false);", (user, password))
+           if permission:
+               cur.execute("INSERT INTO salao.usuarios (usuario, senha_hash, is_adm) VALUES (%s, %s, true);", (user, password))
+           else:
+               cur.execute("INSERT INTO salao.usuarios (usuario, senha_hash, is_adm) VALUES (%s, %s, false);", (user, password))
            conn.commit()
            cur.close()
            conn.close()
