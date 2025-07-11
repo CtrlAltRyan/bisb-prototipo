@@ -52,11 +52,10 @@ psql -U postgres -d salon_db -f database/projeto_banco_salao.sql
 ## 👥 Equipe BISB
 
 | Nome        | Responsabilidade principal         |
-|-------------|-------------------------------------|
-| Rodrigo     | Banco de Dados                      |
+|-------------|------------------------------------|
+| Rodrigo     | Banco de Dados, Dashboard e BI     |
 | Lemuel      | Autenticação (login)               |
-| Nataniel    | Dashboard e visualizações BI       |
-| Ryan        | Frontend geral                     |
+| Ryan        | Frontend geral, Dashboard e BI     |
 | Clara       | Coordenação, identidade visual     |
 
 ---
