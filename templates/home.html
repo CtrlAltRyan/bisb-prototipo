@@ -57,7 +57,7 @@
                             <span>Cadastrar Usuário</span>
                     {% else %}
                     <li class="sidebar__item">
-                        <a class="sidebar__link" href="mailto:lassance@ufc.br?subject=Ajuda&body=Olá, preciso de suporte.">
+                        <a class="sidebar__link" href="#" id="abrir-modal-email">
                             <img src="{{ url_for('static', filename='images/support_icon.png') }}" alt="" class="sidebarsupport__icon">
                             <span>Suporte</span>
                         </a>
@@ -147,6 +147,23 @@
         </main>
     </div>
 
+    <!-- Modal de Email Fake -->
+<div id="modal-email-fake" style="display:none; position:fixed; z-index:9999; left:0; top:0; width:100vw; height:100vh; background:rgba(0,0,0,0.4); align-items:center; justify-content:center;">
+  <div style="background:#fff; padding:32px 24px; border-radius:12px; max-width:350px; width:90%; box-shadow:0 2px 16px #0002; position:relative;">
+    <button id="fechar-modal-email" style="position:absolute; top:8px; right:12px; background:none; border:none; font-size:22px; cursor:pointer;">&times;</button>
+    <h2 style="margin-top:0; font-size:1.2em;">Enviar e-mail para o suporte</h2>
+    <form id="form-email-fake" autocomplete="off">
+      <label>Para:</label><br>
+      <input type="email" value="lassance@ufc.br" readonly style="width:100%; margin-bottom:8px;"/><br>
+      <label>Assunto:</label><br>
+      <input type="text" value="Ajuda" readonly style="width:100%; margin-bottom:8px;"/><br>
+      <label>Mensagem:</label><br>
+      <textarea style="width:100%; height:60px; margin-bottom:12px;">Olá, preciso de ajuda!</textarea><br>
+      <button type="submit" style="width:100%; background:#A88A80; color:#fff; border:none; border-radius:30px; padding:8px 0; font-size:1em; cursor:pointer;">Enviar</button>
+    </form>
+  </div>
+</div>
+
     <script>
   // 1. Configure seu token Mapbox (crie em https://www.mapbox.com/)
   mapboxgl.accessToken = 'pk.eyJ1Ijoicnlhbm1vdXNlIiwiYSI6ImNtY3hyeHFsNTBoMXMyanB1eDF5bzcxNW0ifQ.J8rzus6gRtGJz_kW--09Fg';
@@ -197,6 +214,16 @@
     .catch(console.error);
 });
 
+document.addEventListener('DOMContentLoaded', function() {
+  var modal = document.getElementById('modal-email-fake');
+  var btnAbrir = document.getElementById('abrir-modal-email');
+  var btnFechar = document.getElementById('fechar-modal-email');
+  var form = document.getElementById('form-email-fake');
+  if(btnAbrir) btnAbrir.onclick = function(e) { e.preventDefault(); modal.style.display = 'flex'; };
+  if(btnFechar) btnFechar.onclick = function() { modal.style.display = 'none'; };
+  if(form) form.onsubmit = function(e) { e.preventDefault(); alert('E-mail enviado! (mentira, é só uma brincadeira 😄)'); modal.style.display = 'none'; };
+  window.onclick = function(event) { if(event.target == modal) modal.style.display = 'none'; };
+});
 </script>
 </body>
 </html>
