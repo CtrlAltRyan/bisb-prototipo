@@ -1,8 +1,5 @@
 psycopg2
 flask
-flask-login
 bcrypt
 pandas
-plotly
 dotenv
-folium
