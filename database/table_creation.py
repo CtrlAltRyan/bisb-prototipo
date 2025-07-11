@@ -142,12 +142,13 @@ INSERT INTO {self.schema_name}.servicos (nome_servico, preco) VALUES
     def create_vendas(self):
 
         creation_query = f"""
+DROP TABLE IF EXISTS {self.schema_name}.vendas;
 CREATE TABLE {self.schema_name}.vendas (
     id SERIAL PRIMARY KEY,
     id_cliente INTEGER REFERENCES {self.schema_name}.clientes(id),
     id_servico INTEGER REFERENCES {self.schema_name}.servicos(id),
     valor NUMERIC(10,2),
-    forma_pagamento VARCHAR(10),
+    forma_pagamento VARCHAR(10) CHECK (valor >= 0),
     data_venda DATE
 );"""
         self.cur.execute(creation_query)
@@ -163,26 +164,27 @@ CREATE TABLE {self.schema_name}.vendas (
         # 2. Define as formas de pagamento
         formas_pagamento = ['Dinheiro', 'Crédito', 'Débito', 'Pix']
 
-        # 3. Gera as vendas para o mês de maio de 2025
-        data_inicio = date(2025, 5, 1)
-        dias = 31
+        # 3. Gera as vendas de março a julho
+        for mes in range(3, 8):
+            data_inicio = date(2025, mes, 1)
+            dias = 30 if mes % 2 == 0 else 31
 
-        for i in range(dias):
-            data_venda = data_inicio + timedelta(days=i)
-            vendas_do_dia = random.randint(30, 40)
+            for i in range(dias):
+                data_venda = data_inicio + timedelta(days=i)
+                vendas_do_dia = random.randint(30, 40)
 
-            copia_clientes = clientes.copy()
-            for _ in range(vendas_do_dia):
-                id_cliente = random.choice(copia_clientes)
-                copia_clientes.remove(id_cliente)
-                id_servico, valor = random.choice(servicos)
-                forma_pagamento = random.choice(formas_pagamento)
+                copia_clientes = clientes.copy()
+                for _ in range(vendas_do_dia):
+                    id_cliente = random.choice(copia_clientes)
+                    copia_clientes.remove(id_cliente)
+                    id_servico, valor = random.choice(servicos)
+                    forma_pagamento = random.choice(formas_pagamento)
 
-                
-                self.cur.execute(f"""
-                INSERT INTO {self.schema_name}.vendas (id_cliente, id_servico, valor, forma_pagamento, data_venda)
-                VALUES (%s,%s,%s,%s,%s)
-                """, (id_cliente, id_servico, valor, forma_pagamento, data_venda))
+                    
+                    self.cur.execute(f"""
+                    INSERT INTO {self.schema_name}.vendas (id_cliente, id_servico, valor, forma_pagamento, data_venda)
+                    VALUES (%s,%s,%s,%s,%s)
+                    """, (id_cliente, id_servico, valor, forma_pagamento, data_venda))
 
         self.conn.commit()
 
@@ -203,10 +205,10 @@ CREATE TABLE {self.schema_name}.vendas (
 if __name__ == '__main__':
     creator = DbCreator()
     try:
-        creator.create_schema()
-        creator.create_servicos()
-        creator.create_clientes()
-        creator.create_usuarios()
+        # creator.create_schema()
+        # creator.create_servicos()
+        # creator.create_clientes()
+        # creator.create_usuarios()
         creator.create_vendas()
     finally:
         creator.fechar_conexao()

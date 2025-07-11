@@ -330,11 +330,8 @@ fetch('/dashboard/api/vendasservico')  // grafico
 
     const ctx = document.getElementById('graficoVendasPorServico').getContext('2d');
 
-// .card--sales { background: #A88A80; }
-// .card--clients { background: #C6B4AE; }
-// .card--active-clients { background: rgba(126, 100, 91, 0.87); }
-// .card--most-sold { background: #EED0C4;
-    
+    const totalVendas = qtdVendas.reduce((a, b) => a + b, 0);
+
     new Chart(ctx, {
         type: 'doughnut',
         data: {
@@ -388,15 +385,24 @@ fetch('/dashboard/api/vendasservico')  // grafico
                     }
                 },
                 legend: {
-                    display: false // Você pode colocar true se quiser mostrar a legenda
+                    display: true,
+                    position: 'bottom', // legenda embaixo do gráfico
+                    labels: {
+                        boxWidth: 16, // quadradinho menor
+                        boxHeight: 16, // quadradinho menor
+                        borderRadius: 4 // deixa o quadradinho mais arredondado
+                    }
+                },
+                centerText: {
+                    display: true,
+                    text: totalVendas.toString()
                 }
             },
             scales: {
                 
                 x: {
-                    grid: {
-        display: false 
-      },
+                    display: false,
+                    grid: { display: false },
                     title: {
                         display: false,
                         text: 'Serviços',
@@ -412,9 +418,8 @@ fetch('/dashboard/api/vendasservico')  // grafico
                     }
                 },
                 y: {
-                    grid: {
-        display: false 
-      },
+                    display: false,
+                    grid: { display: false },
                     beginAtZero: true,
                     title: {
                         display: false,
@@ -431,7 +436,28 @@ fetch('/dashboard/api/vendasservico')  // grafico
                     }
                 }
             }
-        }
+        },
+        plugins: [{
+            id: 'centerText',
+            afterDraw: function(chart) {
+                const opts = chart.config.options.plugins.centerText;
+                if (opts && opts.display) {
+                    const ctx = chart.ctx;
+                    ctx.save();
+                    ctx.font = 'bold 40px Open Sans, Arial';
+                    ctx.fillStyle = '#333';
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    const x = chart.getDatasetMeta(0).data[0].x;
+                    const y = chart.getDatasetMeta(0).data[0].y;
+                    ctx.fillText(opts.text, x, y - 5); // número mais para baixo
+                    ctx.font = '16px Open Sans, Arial';
+                    ctx.fillStyle = '#666';
+                    ctx.fillText('vendas', x, y + 23); // texto ainda mais para baixo
+                    ctx.restore();
+                }
+            }
+        }]
     });
 })
 .catch(error => {
@@ -457,7 +483,7 @@ fetch('/dashboard/api/vendasmes')  // grafico
             datasets: [{
                 label: 'Vendas por Mês',
 
-                data: qtdVendas,
+                data: valores,
                 backgroundColor: [
                     'rgba(126, 100, 91, 0.87)',
                     '#A88A80',
@@ -570,7 +596,7 @@ fetch('/dashboard/api/topClientes')
             labels: labels,
             datasets: [{
                 label: 'Clientes',
-                data: qtdVendas,
+                data: valores,
                 backgroundColor: [
                     'rgba(126, 100, 91, 0.87)',
                     '#A88A80',
@@ -590,7 +616,7 @@ fetch('/dashboard/api/topClientes')
         }]
       },
       options: {
-        responsive: true,
+        responsive: false,
         plugins: {
           tooltip: {
             callbacks: {
@@ -609,21 +635,22 @@ fetch('/dashboard/api/topClientes')
             }
           },
           title: {
-            display: true,
-            text: 'Melhores Clientes',
+            display: false,
+            text: 'Clientes VIP',
             font: {
               size: 18
             }
           },
           legend: {
-            display: false
+            display: false,
+            text: 'Valor Total'
           }
         },
         scales: {
           x: {
             title: {
-              display: false,
-              text: 'Mês',
+              display: true,
+              text: 'Valor Total',
               font: {
                 size: 14
               }
@@ -665,5 +692,111 @@ fetch('/dashboard/api/topClientes')
   .catch(error => {
     console.error('Erro ao carregar os dados dos gráficos:', error);
   });
+
+
+fetch('/dashboard/api/botClientes')  // gráfico
+  .then(response => response.json())
+  .then(data => {
+    const labels = data.bot_clientes.labels;
+    const servicos = data.bot_clientes.data;
+
+    const qtdVendas = servicos.map(item => item.qtd);
+    const valores = servicos.map(item => parseFloat(item.valor));
+
+    const ctx = document.getElementById('graficobotClientes').getContext('2d');
+
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: 'Clientes',
+          data: qtdVendas,
+          backgroundColor: 'rgba(75, 192, 192, 0.7)',
+          borderColor: 'rgba(75, 192, 192, 1)',
+          borderWidth: 1,
+          borderRadius: 0 // barras coladas retas
+        }]
+      },
+      options: {
+        responsive: false,
+        plugins: {
+          tooltip: {
+            callbacks: {
+              label: function(context) {
+                const index = context.dataIndex;
+                const qtd = qtdVendas[index];
+                const valor = valores[index];
+                return [
+                  `Vendas: ${qtd}`,
+                  `Valor total: R$ ${valor.toLocaleString('pt-BR', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                  })}`
+                ];
+              }
+            }
+          },
+          title: {
+            display: true,
+            text: 'Piores Clientes',
+            font: {
+              size: 18
+            }
+          },
+          legend: {
+            display: false
+          }
+        },
+        scales: {
+          x: {
+            title: {
+              display: false,
+              text: 'Mês',
+              font: {
+                size: 14
+              }
+            },
+            ticks: {
+              font: {
+                size: 12
+              }
+            },
+            grid: {
+              display: false
+            },
+            categoryPercentage: 1.0,
+            barPercentage: 1.0
+          },
+          y: {
+            beginAtZero: true,
+            title: {
+              display: false,
+              text: 'Quantidade de Vendas',
+              font: {
+                size: 14
+              }
+            },
+            ticks: {
+              font: {
+                size: 12
+              }
+            },
+            grid: {
+              display: false
+            }
+          }
+        }
+      }
+    });
+  })
+  .catch(error => {
+    console.error('Erro ao carregar os dados dos gráficos:', error);
+  });
+
+
+
+
+
 
 
