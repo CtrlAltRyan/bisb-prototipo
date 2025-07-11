@@ -1,0 +1,9 @@
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: bisbdb
+      POSTGRES_USER: bisbdb_user
+      POSTGRES_PASSWORD: rKQQdx5sUhgQLlDzWNTzeKIZBObCzmxG
+    ports: 
+      - "5432:5432"
