@@ -20,7 +20,7 @@ Sistema protótipo desenvolvido pela equipe BISB Consultoria como parte do proje
 
 ### 🔧 Pré-requisitos
 
-- Python 3.10+ ou Node.js (dependendo do backend escolhido)
+- Python 3.10+ 
 - PostgreSQL
 - Git
 - (Opcional) VSCode com extensão Live Server ou algum gerenciador de ambiente virtual
