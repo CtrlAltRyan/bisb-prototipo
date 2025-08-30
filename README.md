@@ -6,8 +6,8 @@ Sistema protótipo desenvolvido pela equipe BISB Consultoria como parte do proje
 
 ```
 /bisb-prototipo
-├── backend/              # Código da API (Flask, FastAPI ou Node)
-├── frontend/             # Interface do usuário (React ou HTML/CSS/JS)
+├── backend/              # Código da API (Flask)
+├── frontend/             # Interface do usuário (HTML/CSS/JS)
 ├── database/             # Scripts SQL e documentação do banco
 ├── design/               # Logotipo, layout visual e identidade
 ├── docs/                 # Cronograma, Kanban, instruções gerais
@@ -69,6 +69,6 @@ Cada membro deve trabalhar em sua própria branch e enviar pull requests para a 
 ## 📅 Entrega final
 
 🗓️ **Apresentação do protótipo funcionando:** 11/07/2025  
-📍 **Status atual:** [Em andamento]
+📍 **Status atual:** [Apresentado]
 
 ---
